@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, Text } from "react-native";
 
 function Button(props) {
 	return (
-		<TouchableOpacity style={styles.container}>
+		<TouchableOpacity style={styles.container} onPress={props.onClick}>
 			<Text style={styles.text2}>{props.buttonText}</Text>
 		</TouchableOpacity>
 	);

@@ -1,11 +1,13 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import Login from "./screens/LogIn";
-import { LinearGradient } from "expo-linear-gradient";
+import LogIn from "./screens/LogIn";
+import Home from "./screens/Home";
+import AppNavigator from "./components/Navigation";
+
 export default function App() {
 	return (
 		<View style={styles.container}>
-			<Login />
+			<AppNavigator />
 		</View>
 	);
 }
@@ -13,8 +15,7 @@ export default function App() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#fff",
-		alignItems: "center",
+
 		justifyContent: "center"
 	}
 });

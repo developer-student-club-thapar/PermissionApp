@@ -12,7 +12,10 @@ import {
 import EvilIconsIcon from "react-native-vector-icons/EvilIcons";
 import Button from "../components/Button";
 
-function Login(props) {
+const LogIn = props => {
+	const navigateHandler = () => {
+		props.navigation.navigate("Home");
+	};
 	return (
 		<View style={styles.container}>
 			<Image
@@ -54,11 +57,11 @@ function Login(props) {
 						style={styles.passwordInput}
 					></TextInput>
 				</View>
-				<Button buttonText='Log In' />
+				<Button buttonText='Log In' onClick={navigateHandler} />
 			</View>
 		</View>
 	);
-}
+};
 
 const styles = StyleSheet.create({
 	container: {
@@ -142,4 +145,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default Login;
+export default LogIn;
