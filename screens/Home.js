@@ -15,8 +15,8 @@ import { ScrollView } from "react-native-gesture-handler";
 const Home = props => {
 	const [selectedOption, toggleColorHandler] = useState([
 		{ type: "Library", color: "rgba(95,0,14,1)" },
-		{ type: "Late Entry", color: "rgba(95,0,14,1)" },
-		{ type: "Early Leave", color: "rgba(95,0,14,1)" },
+		{ type: "LateEntry", color: "rgba(95,0,14,1)" },
+		{ type: "EarlyLeave", color: "rgba(95,0,14,1)" },
 		{ type: "Society", color: "rgba(95,0,14,1)" }
 	]);
 
@@ -30,9 +30,10 @@ const Home = props => {
 
 		console.log(index);
 		console.log(identifiedPlace.color);
+		props.navigation.navigate(identifiedPlace.type);
 	};
 
-	return (
+	return(
 		<View style={{ flex: 1 }}>
 			<AppHeader navigation={props.navigation} title='Home' />
 			<View style={styles.container}>
