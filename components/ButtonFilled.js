@@ -1,10 +1,12 @@
+//Reusable Button with color filled inside. receive two props from parent component i.e buttonText,color and onClick
+
 import React, { Component } from "react";
 import { StyleSheet, TouchableOpacity, Text } from "react-native";
 
 const Index = props => {
 	return (
 		<TouchableOpacity
-			onPress={() => props.onClick(props.buttonText)}
+			onPress={() => props.onClick(props.index)}
 			style={[styles.container, { backgroundColor: props.color }]}
 		>
 			<Text style={styles.text2}>{props.buttonText}</Text>

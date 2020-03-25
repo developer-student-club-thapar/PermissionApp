@@ -1,21 +1,54 @@
-import React,{useState} from 'react';
-import {StyleSheet,Text,View,} from 'react-native';
-import AppHeader from '../components/Header';
+// Late entry permission page of our app.
+import React, { useState, useEffect } from "react";
+import {
+	StyleSheet,
+	View,
+	TouchableOpacity,
+	Text,
+	TextInput,
+	RefreshControl
+} from "react-native";
+import AppHeader from "../components/Header";
+import { ScrollView } from "react-native-gesture-handler";
 import EvilIconsIcon from "react-native-vector-icons/EvilIcons";
-import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
-import Button from '../components/Button';
-import moment from "moment";
+import Button from "../components/Button";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import moment from "moment";
 
-const LateEntry=props=>{
+//wait function to return back a promise after refreshing the screen on pulling down
+function wait(timeout) {
+	return new Promise(resolve => {
+		setTimeout(resolve, timeout);
+	});
+}
 
-    const onClickHandler = index => {
-        console.log("work");
-        props.navigation.navigate("Status");
+//This is the main function consisting of all the functionality of Late entry screen.
+const LateEntry = props => {
+	//For refreshing the screen on pulling down
+	const [refreshing, setRefreshing] = React.useState(false);
+	const onRefresh = React.useCallback(() => {
+		setRefreshing(true);
+
+		wait(2000).then(() => setRefreshing(false));
+	}, [refreshing]);
+
+	//Demo function for the submit button
+	const onClickHandler = index => {
+		console.log("work");
 	};
+
+	//states declaration for the date and time picker fields status
 	const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+	const [isTimeLeavePickerVisible, setTimeLeavePickerVisibility] = useState(
+		false
+	);
+	const [isTimeEntryPickerVisible, setTimeEntryPickerVisibility] = useState(
+		false
+	);
+
+	//states declaration for the date and time picker fields values
 	const [date, setDate] = useState("");
-	const [clicked, clickHandler] = useState(false);
+	const [timeLeave, setTimeLeave] = useState("");
 
 	const showDatePicker = () => {
 		setDatePickerVisibility(true);
@@ -23,78 +56,123 @@ const LateEntry=props=>{
 
 	const hideDatePicker = date => {
 		setDatePickerVisibility(false);
-		setDate(moment(date).format("MMMM, Do YYYY"));
 	};
 
 	const handleConfirm = date => {
 		hideDatePicker();
-		clickHandler(true);
-		console.warn("A date has been picked: ", date);
-		console.log(date);
+		setDate(moment(date).format("MMMM, Do YYYY"));
 	};
-	const onChange = (event, selectedDate) => {
-		const currentDate = selectedDate || date;
-		setShow(Platform.OS === "ios");
-		setDate(currentDate);
-    };
-    
-    return(
-        <View style={{flex:1}}> 
-       <AppHeader navigation={props.navigation} title="Late Entry"/>
-        <View style={styles.container}>
-            <View>
-    <Text style={styles.textHome}>LATE ENTRY{'\n'}</Text>
-            </View>
-            <View style={styles.rect9}>
-            <EvilIconsIcon name='pencil' style={styles.iconUser}/>
-            <TextInput
-              placeholder='Room Number'
-              placeholderTextColor='rgba(255,255,255,1)'
-              secureTextEntry={false}
-              style={styles.usernameInput}
-            />
-            </View>
-            <View style={styles.rect9}>
-                <EvilIconsIcon name='calendar' style={styles.iconUser}/>
-                <TouchableOpacity onPress={showDatePicker}>
-                    {clicked && <Text style={styles.editText}>{Date}</Text>}
-                    {!clicked && <Text style={styles.editText}>Enter Date</Text>}
-                </TouchableOpacity>
-                <DateTimePickerModal
-						isVisible={isDatePickerVisible}
-						mode='date'
-						onConfirm={handleConfirm}
-						onCancel={hideDatePicker}
-						value={date}
-						isDarkModeEnabled={true}
-					/>
-            </View>
-            <View style={styles.rect9}>
-                <EvilIconsIcon name='location' style={styles.iconUser}></EvilIconsIcon>
-                <TextInput 
-                 placeholder='Destination'
-                 placeholderTextColor='rgba(255,255,255,1)'
-                 secureTextEntry={false}
-                 style={styles.usernameInput}
-                />
-            </View>
-            <View> 
-                <Button
-                  buttonText="SUBMIT"
-				  onClick={onClickHandler}
-				  color='rgba(107,8,127,1)'
-                />
-            </View>
-        </View>
+	const showTimeLeavePicker = () => {
+		setTimeLeavePickerVisibility(true);
+	};
+	const showTimeEntryPicker = () => {
+		setTimeEntryPickerVisibility(true);
+	};
+	const hideTimeLeavePicker = () => {
+		setTimeLeavePickerVisibility(false);
+	};
+	const hideTimeEntryPicker = timeEntry => {
+		setTimeEntryPickerVisibility(false);
+	};
+	const handleTimeLeaveConfirm = timeLeave => {
+		hideTimeLeavePicker();
+		setTimeLeave(moment(timeLeave).format("HH : mm"));
+	};
+	const handleTimeEntryConfirm = timeEntry => {
+		hideTimeEntryPicker();
+		setTimeEntry(moment(timeEntry).format("HH : mm"));
+	};
 
-
-       </View>
-    );
+	return (
+		<View style={{ flex: 1 }}>
+			<AppHeader navigation={props.navigation} title='LateEntry' />
+			<View style={styles.container}>
+				<ScrollView
+					refreshControl={
+						<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+					}
+				>
+					<View>
+						<Text style={styles.textHome}>
+							{"\n"}LATE ENTRY{"\n"}
+						</Text>
+					</View>
+					<View style={styles.rect9}>
+						<EvilIconsIcon
+							name='pencil'
+							style={styles.iconUser}
+						></EvilIconsIcon>
+						<TextInput
+							placeholder='Room Number'
+							placeholderTextColor='rgba(255,255,255,1)'
+							secureTextEntry={false}
+							style={styles.usernameInput}
+						></TextInput>
+					</View>
+					<View style={styles.rect9}>
+						<EvilIconsIcon
+							name='calendar'
+							style={styles.iconUser}
+						></EvilIconsIcon>
+						<TouchableOpacity onPress={showDatePicker}>
+							{date != "" && <Text style={styles.editText}> {date}</Text>}
+							{date == "" && <Text style={styles.editText}> Date </Text>}
+						</TouchableOpacity>
+						<DateTimePickerModal
+							isVisible={isDatePickerVisible}
+							mode='date'
+							onConfirm={handleConfirm}
+							onCancel={hideDatePicker}
+							isDarkModeEnabled={true}
+						/>
+					</View>
+					<View style={styles.rect9}>
+						<EvilIconsIcon name='clock' style={styles.iconUser}></EvilIconsIcon>
+						<TouchableOpacity
+							style={styles.timeText}
+							onPress={showTimeLeavePicker}
+						>
+							<Text style={styles.editText}>Time </Text>
+							{timeLeave != "" && (
+								<Text style={styles.editText}> : {timeLeave}</Text>
+							)}
+						</TouchableOpacity>
+						<DateTimePickerModal
+							isVisible={isTimeLeavePickerVisible}
+							mode='time'
+							onConfirm={handleTimeLeaveConfirm}
+							onCancel={hideTimeLeavePicker}
+							isDarkModeEnabled={true}
+							is24Hour={false}
+						/>
+					</View>
+					<View style={styles.rect9}>
+						<EvilIconsIcon
+							name='location'
+							style={styles.iconUser}
+						></EvilIconsIcon>
+						<TextInput
+							placeholder='Place you have returned from'
+							placeholderTextColor='rgba(255,255,255,1)'
+							secureTextEntry={false}
+							style={styles.usernameInput}
+						></TextInput>
+					</View>
+					<View style={styles.buttonHome}>
+						<Button
+							buttonText='Submit'
+							onClick={onClickHandler}
+							color='rgba(80,227,194,1)'
+						/>
+					</View>
+				</ScrollView>
+			</View>
+		</View>
+	);
 };
 
-const styles=StyleSheet.create({
-
-    container: {
+const styles = StyleSheet.create({
+	container: {
 		flex: 1,
 		flexDirection: "column",
 		alignItems: "center",
@@ -110,12 +188,17 @@ const styles=StyleSheet.create({
 	editText: {
 		color: "white"
 	},
+	timeText: {
+		flex: 1,
+		flexDirection: "row"
+	},
 
 	textHome: {
-		color: "rgba(255,255,255,1)",
+		color: "rgba(80,227,194,1)",
 		alignSelf: "center",
 		fontWeight: "bold",
-		fontSize: 28
+		fontSize: 28,
+		marginBottom: 10
 	},
 	rect9: {
 		backgroundColor: "rgba(251,247,247,0.25)",
@@ -124,7 +207,7 @@ const styles=StyleSheet.create({
 		borderRadius: 5,
 		flexDirection: "row",
 		padding: 10,
-		width: "80%"
+		width: "100%"
 	},
 	iconUser: {
 		color: "rgba(255,255,255,1)",
@@ -135,7 +218,6 @@ const styles=StyleSheet.create({
 	usernameInput: {
 		color: "rgba(255,255,255,1)"
 	}
-   
 });
 
 export default LateEntry;

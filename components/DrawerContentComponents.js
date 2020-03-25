@@ -1,3 +1,5 @@
+//component has been used in navigation.js to create a custom Drawer.
+
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { DrawerItems } from "react-navigation-drawer";

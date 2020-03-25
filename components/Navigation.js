@@ -12,7 +12,8 @@ import Status from "../screens/Status";
 import EarlyLeave from "../screens/EarlyLeave";
 import LateEntry from "../screens/LateEntry";
 
-const AppNavigator = createDrawerNavigator(
+//main function to create a navigation drawer
+const Navigation = createDrawerNavigator(
 	{
 		LogIn: {
 			screen: LogIn,
@@ -29,67 +30,35 @@ const AppNavigator = createDrawerNavigator(
 		Logout: {
 			screen: LogIn
 		},
-		Society:{
+		Society: {
 			screen: Society,
-			navigationOptions :{
-				drawerLabel:<Hidden />
+			navigationOptions: {
+				drawerLabel: <Hidden />
 			}
 		},
-		Library:{
+		Library: {
 			screen: Library,
-			navigationOptions :{
-				drawerLabel:<Hidden />
+			navigationOptions: {
+				drawerLabel: <Hidden />
 			}
 		},
 		LateEntry: {
 			screen: LateEntry,
-			navigationOptions :{
-				drawerLabel:<Hidden />
+			navigationOptions: {
+				drawerLabel: <Hidden />
 			}
 		},
 		EarlyLeave: {
 			screen: EarlyLeave,
-			navigationOptions :{
-				drawerLabel:<Hidden />
+			navigationOptions: {
+				drawerLabel: <Hidden />
 			}
-		},
-		
-	   
-},
+		}
+	},
 	{
+		//To customise the side Drawer
 		contentComponent: drawerContentComponents
 	}
 );
 
-export default createAppContainer(AppNavigator);
-// const MyStack = createStackNavigator({
-// 	Announcement: {
-// 		screen: Announcement
-// 	},
-// 	Complaint: {
-// 		screen: Complaint
-// 	},
-// 	Chat: {
-// 		screen: Chat
-// 	},
-// 	MessMenu: {
-// 		screen: MessMenu
-// 	}
-// });
-// const MyDrawer = createDrawerNavigator(
-// 	{
-// 		Main: { screen: MyStack }
-// 	},
-// 	{ contentComponent: Announcement }
-// );
-
-// const RootStack = createStackNavigator({
-// 	LogIn: {
-// 		screen: LogIn
-// 	},
-// 	Drawer: {
-// 		screen: MyDrawer,
-// 		navigationOptions: { header: null }
-// 	}
-// });
-// export default createAppContainer(RootStack);
+export default createAppContainer(Navigation);

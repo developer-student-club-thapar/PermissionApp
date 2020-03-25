@@ -1,3 +1,4 @@
+//component used in center of the navigation bar i.e thapar logo
 import React from "react";
 import { Image, StyleSheet } from "react-native";
 

@@ -1,6 +1,6 @@
 //Login page
 
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import {
 	StyleSheet,
 	View,
@@ -11,10 +11,32 @@ import {
 } from "react-native";
 import EvilIconsIcon from "react-native-vector-icons/EvilIcons";
 import Button from "../components/Button";
+import LoginOptions from "../components/LoginOptions";
 
 const LogIn = props => {
 	const navigateHandler = () => {
 		props.navigation.navigate("Home");
+	};
+	const [selectedOption, toggleBorderHandler] = useState([
+		{ type: "Student", border: "rgba(255,255,255,0)" },
+		{ type: "Warden", border: "rgba(255,255,255,0)" },
+		{ type: "Caretaker", border: "rgba(255,255,255,0)" }
+	]);
+
+	const onClickHandler = index => {
+		//to create a copy of the original array, so as not to change the original state.
+		let newArr = [...selectedOption];
+		//iterate over the array to find the one which was pressed and received in 'index' arguement.
+		let identifiedPlace = newArr.find(p => p.type === index);
+
+		for (let option of newArr) {
+			option.border = "rgba(255,255,255,0)";
+		}
+		identifiedPlace.border = "rgba(255,255,255,1)";
+		toggleBorderHandler(newArr);
+
+		//navigate to the pressed option using navigaton prop received from navigation.js
+		//props.navigation.navigate(identifiedPlace.type);
 	};
 	return (
 		<View style={styles.container}>
@@ -26,15 +48,16 @@ const LogIn = props => {
 
 			<View style={styles.innerContainer}>
 				<View style={styles.selectOption}>
-					<TouchableOpacity style={styles.selectedbuttonLogin}>
-						<Text style={styles.selectTextLogin}>Student</Text>
-					</TouchableOpacity>
-					<TouchableOpacity style={styles.selectbuttonLogin}>
-						<Text style={styles.selectTextLogin}>Warden</Text>
-					</TouchableOpacity>
-					<TouchableOpacity style={styles.selectbuttonLogin}>
-						<Text style={styles.selectTextLogin}>Caretaker</Text>
-					</TouchableOpacity>
+					{selectedOption.map(option => {
+						return (
+							<LoginOptions
+								type={option.type}
+								key={option.type}
+								onClick={onClickHandler}
+								border={option.border}
+							/>
+						);
+					})}
 				</View>
 				<View style={styles.rect9}>
 					<EvilIconsIcon name='user' style={styles.iconUser}></EvilIconsIcon>
@@ -57,7 +80,11 @@ const LogIn = props => {
 						style={styles.passwordInput}
 					></TextInput>
 				</View>
-				<Button buttonText='Log In' onClick={navigateHandler} />
+				<Button
+					buttonText='Log In'
+					onClick={navigateHandler}
+					color='rgba(95,0,14,1)'
+				/>
 			</View>
 		</View>
 	);
