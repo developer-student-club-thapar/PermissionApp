@@ -41,7 +41,7 @@ const ScrollViewEntry = props => {
 					renderViewLess={renderViewLess}
 					textStyle={{ textAlign: "left", color: "white", fontSize: 14 }}
 				>
-					<Text>You permission request has been accepted.{"\n"}</Text>
+					<Text>Your permission request has been accepted.{"\n"}</Text>
 					<Text>In Time:{"\n"}</Text>
 					<Text>Out Time:{"\n"}</Text>
 					<Text>Destination:</Text>

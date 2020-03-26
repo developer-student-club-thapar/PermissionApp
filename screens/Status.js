@@ -21,10 +21,7 @@ const Status = props => {
 	return (
 		<View style={{ flex: 1 }}>
 			<AppHeader navigation={props.navigation} title='Permission Status' />
-			<ScrollView
-				refreshControl={
-					<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-				}
+			<ScrollView horizontal={false} contentContainerStyle={styles.scrollArea3_contentContainerStyle}
 			>
 				<View style={styles.imagestyles}>
 					<Image
@@ -37,16 +34,18 @@ const Status = props => {
 							fontWeight: "bold",
 							color: "white",
 							position: "absolute", // child
-							bottom: "40%", // position where you want
+							bottom: "35%", // position where you want
 
 							fontSize: 25,
 							backgroundColor: "rgba(15,15, 15,0.7)",
-							padding: 20
+							padding: 20,
+							marginLeft:50
 						}}
 					>
 						PERMISSION STATUS
 					</Text>
 				</View>
+				
 				<View style={styles.container}>
 					<View style={styles.scrollArea3}>
 						<ScrollViewEntry style={styles.scrollViewEntry}></ScrollViewEntry>
@@ -61,6 +60,7 @@ const Status = props => {
 						<ScrollViewEntry style={styles.scrollViewEntry}></ScrollViewEntry>
 					</View>
 				</View>
+				
 			</ScrollView>
 		</View>
 	);
@@ -89,60 +89,60 @@ const styles = StyleSheet.create({
 	scrollViewEntry2: {
 		marginTop: 20,
 		width: 501,
-		height: 200,
 		backgroundColor: "rgba(38,90,32,0.63)"
 	},
 	scrollViewEntry3: {
 		marginTop: 20,
 		width: 501,
-		height: 200,
+		
 		backgroundColor: "rgba(38,90,32,0.63)"
 	},
 	scrollViewEntry4: {
 		marginTop: 20,
 		width: 501,
-		height: 200,
+		
 		backgroundColor: "rgba(38,90,32,0.63)"
 	},
 	scrollViewEntry5: {
 		marginTop: 20,
 		width: 501,
-		height: 200,
+		
 		backgroundColor: "rgba(38,90,32,0.63)"
 	},
 	scrollViewEntry6: {
 		marginTop: 20,
 		width: 501,
-		height: 200,
+		
 		backgroundColor: "rgba(38,90,32,0.63)"
 	},
 	scrollViewEntry7: {
 		marginTop: 20,
 		width: 501,
-		height: 200,
+		
 		backgroundColor: "rgba(38,90,32,0.63)"
 	},
 	scrollViewEntry8: {
 		marginTop: 20,
 		width: 501,
-		height: 200,
+		
 		backgroundColor: "rgba(38,90,32,0.63)"
 	},
 	scrollViewEntry9: {
 		marginTop: 20,
 		width: 501,
-		height: 200,
+		
 		backgroundColor: "rgba(38,90,32,0.63)"
 	},
 	scrollViewEntry10: {
 		marginTop: 20,
 		width: 501,
-		height: 200,
+		
 		backgroundColor: "rgba(38,90,32,0.63)"
 	},
 	scrollArea3_contentContainerStyle: {
 		height: 2615,
-		flexDirection: "column"
+		flexDirection: "column",
+		backgroundColor:"rgba(18,18,18,1)",
 	}
 });
 
