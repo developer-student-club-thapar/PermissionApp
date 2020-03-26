@@ -34,7 +34,7 @@ const LateEntry = props => {
 
 	//Demo function for the submit button
 	const onClickHandler = index => {
-		console.log("work");
+		props.navigation.navigate("Status");
 	};
 
 	//states declaration for the date and time picker fields status
@@ -198,7 +198,8 @@ const styles = StyleSheet.create({
 		alignSelf: "center",
 		fontWeight: "bold",
 		fontSize: 28,
-		marginBottom: 10
+		marginBottom: 10,
+		marginTop: "10%"
 	},
 	rect9: {
 		backgroundColor: "rgba(251,247,247,0.25)",

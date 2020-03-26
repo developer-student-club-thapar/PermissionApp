@@ -36,7 +36,7 @@ const Society = props => {
 
 	//Demo function for the submit button
 	const onClickHandler = index => {
-		console.log("work");
+		props.navigation.navigate("Status");
 	};
 	const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 	const [isTimeLeavePickerVisible, setTimeLeavePickerVisibility] = useState(
@@ -225,7 +225,8 @@ const styles = StyleSheet.create({
 		alignSelf: "center",
 		fontWeight: "bold",
 		fontSize: 28,
-		marginBottom: 10
+		marginBottom: 10,
+		marginTop: "10%"
 	},
 	rect9: {
 		backgroundColor: "rgba(251,247,247,0.25)",

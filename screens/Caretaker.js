@@ -1,17 +1,18 @@
-// Permission status page of the app.
+// Caretaker page of the app.
 
 import React, { Component } from "react";
 import { View, Text, StyleSheet, Image, RefreshControl } from "react-native";
 import AppHeader from "../components/Header";
 import ScrollViewEntry from "../components/ScrollViewEntry";
 import { ScrollView } from "react-native-gesture-handler";
+import Post from "../components/Post";
 
 function wait(timeout) {
 	return new Promise(resolve => {
 		setTimeout(resolve, timeout);
 	});
 }
-const Status = props => {
+const Caretaker = props => {
 	const [refreshing, setRefreshing] = React.useState(false);
 	const onRefresh = React.useCallback(() => {
 		setRefreshing(true);
@@ -28,40 +29,29 @@ const Status = props => {
 					<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
 				}
 			>
-				<View style={styles.imagestyles}>
-					<Image
-						source={require("../assets/images/status.jpg")}
-						resizeMode='contain'
-						style={styles.image}
-					/>
-					<Text
-						style={{
-							fontWeight: "bold",
-							color: "white",
-							position: "absolute",
-							textAlign: "center",
-							margin: "15%",
-							fontSize: 22,
-							backgroundColor: "rgba(15,15, 15,0.7)",
-							padding: 15
-						}}
-					>
-						PERMISSION STATUS
-					</Text>
-				</View>
+				<Text
+					style={{
+						fontWeight: "bold",
+						color: "white",
+
+						textAlign: "center",
+						margin: "10%",
+						fontSize: 22,
+
+						color: "white"
+					}}
+				>
+					Permission Requests
+				</Text>
 
 				<View style={styles.container}>
 					<View style={styles.scrollArea3}>
-						<ScrollViewEntry style={styles.scrollViewEntry}></ScrollViewEntry>
-						<ScrollViewEntry style={styles.scrollViewEntry}></ScrollViewEntry>
-						<ScrollViewEntry style={styles.scrollViewEntry}></ScrollViewEntry>
-						<ScrollViewEntry style={styles.scrollViewEntry}></ScrollViewEntry>
-						<ScrollViewEntry style={styles.scrollViewEntry}></ScrollViewEntry>
-						<ScrollViewEntry style={styles.scrollViewEntry}></ScrollViewEntry>
-						<ScrollViewEntry style={styles.scrollViewEntry}></ScrollViewEntry>
-						<ScrollViewEntry style={styles.scrollViewEntry}></ScrollViewEntry>
-						<ScrollViewEntry style={styles.scrollViewEntry}></ScrollViewEntry>
-						<ScrollViewEntry style={styles.scrollViewEntry}></ScrollViewEntry>
+						<Post style={styles.scrollViewEntry}></Post>
+						<Post style={styles.scrollViewEntry}></Post>
+						<Post style={styles.scrollViewEntry}></Post>
+						<Post style={styles.scrollViewEntry}></Post>
+						<Post style={styles.scrollViewEntry}></Post>
+						<Post style={styles.scrollViewEntry}></Post>
 					</View>
 				</View>
 			</ScrollView>
@@ -95,4 +85,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default Status;
+export default Caretaker;

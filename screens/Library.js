@@ -33,7 +33,9 @@ const Library = props => {
 		wait(2000).then(() => setRefreshing(false));
 	}, [refreshing]);
 
-	const onClickHandler = index => {};
+	const onClickHandler = index => {
+		props.navigation.navigate("Status");
+	};
 	const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 	const [isTimeLeavePickerVisible, setTimeLeavePickerVisibility] = useState(
 		false
@@ -203,6 +205,7 @@ const styles = StyleSheet.create({
 		alignSelf: "center",
 		fontWeight: "bold",
 		fontSize: 28,
+		marginTop: "10%",
 		marginBottom: 10
 	},
 	rect9: {

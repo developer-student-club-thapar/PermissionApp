@@ -11,6 +11,8 @@ import Society from "../screens/Society";
 import Status from "../screens/Status";
 import EarlyLeave from "../screens/EarlyLeave";
 import LateEntry from "../screens/LateEntry";
+import Caretaker from "../screens/Caretaker";
+import Warden from "../screens/Warden";
 
 //main function to create a navigation drawer
 const Navigation = createDrawerNavigator(
@@ -50,6 +52,18 @@ const Navigation = createDrawerNavigator(
 		},
 		EarlyLeave: {
 			screen: EarlyLeave,
+			navigationOptions: {
+				drawerLabel: <Hidden />
+			}
+		},
+		Caretaker: {
+			screen: Caretaker,
+			navigationOptions: {
+				drawerLabel: <Hidden />
+			}
+		},
+		Warden: {
+			screen: Warden,
 			navigationOptions: {
 				drawerLabel: <Hidden />
 			}

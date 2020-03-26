@@ -30,8 +30,7 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		margin: "auto",
 		padding: 15,
-		fontSize: 18,
-		fontWeight: "bold"
+		fontSize: 18
 	}
 });
 

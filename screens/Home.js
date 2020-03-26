@@ -65,11 +65,9 @@ const Home = props => {
 					}
 				>
 					<View>
-						<Text style={styles.textHome}>
-							{"\n"}SELECT CATEGORY {"\n"}
-						</Text>
+						<Text style={styles.textHome}>{"\n"}SELECT CATEGORY</Text>
 					</View>
-					<View>
+					<View style={styles.buttonContent}>
 						{selectedOption.map(option => {
 							return (
 								<View style={styles.buttonHome} key={option.type}>
@@ -98,25 +96,30 @@ const styles = StyleSheet.create({
 		flexDirection: "column",
 		alignItems: "center",
 		justifyContent: "center",
-		borderWidth: 1,
 		backgroundColor: "rgba(18,18,18,1)",
 		width: "100%",
 		height: "100%"
 	},
 	buttonHome: {
-		marginBottom: 20
+		marginBottom: "10%"
+	},
+	buttonContent: {
+		justifyContent: "center",
+		alignItems: "center",
+		margin: "10%"
 	},
 
 	textHome: {
 		color: "rgba(255,255,255,1)",
 		alignSelf: "center",
 		fontWeight: "bold",
-		fontSize: 28
+		fontSize: 28,
+		marginTop: "10%",
+		marginBottom: "10%"
 	},
 	needHelp: {
 		color: "rgba(255,255,255,1)",
-		position: "absolute",
-		bottom: 20,
+		padding: 6,
 		textAlign: "center"
 	}
 });

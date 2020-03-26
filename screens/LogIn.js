@@ -14,13 +14,25 @@ import Button from "../components/Button";
 import LoginOptions from "../components/LoginOptions";
 
 const LogIn = props => {
-	const navigateHandler = () => {
-		props.navigation.navigate("Home");
-	};
 	const [selectedOption, toggleBorderHandler] = useState([
-		{ type: "Student", border: "rgba(255,255,255,0)" },
-		{ type: "Warden", border: "rgba(255,255,255,0)" },
-		{ type: "Caretaker", border: "rgba(255,255,255,0)" }
+		{
+			type: "Student",
+			border: "rgba(255,255,255,1)",
+			selected: true,
+			navigateTo: "Home"
+		},
+		{
+			type: "Warden",
+			border: "rgba(255,255,255,0)",
+			selected: false,
+			navigateTo: "Warden"
+		},
+		{
+			type: "Caretaker",
+			border: "rgba(255,255,255,0)",
+			selected: false,
+			navigateTo: "Caretaker"
+		}
 	]);
 
 	const onClickHandler = index => {
@@ -31,12 +43,21 @@ const LogIn = props => {
 
 		for (let option of newArr) {
 			option.border = "rgba(255,255,255,0)";
+			option.selected = false;
 		}
 		identifiedPlace.border = "rgba(255,255,255,1)";
+		identifiedPlace.selected = true;
 		toggleBorderHandler(newArr);
 
 		//navigate to the pressed option using navigaton prop received from navigation.js
 		//props.navigation.navigate(identifiedPlace.type);
+	};
+	const navigateHandler = () => {
+		for (let select of selectedOption) {
+			if (select.selected) {
+				props.navigation.navigate(select.navigateTo);
+			}
+		}
 	};
 	return (
 		<View style={styles.container}>
