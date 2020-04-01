@@ -1,2 +1,0 @@
-# PermissionApp
-Girls Permission App
