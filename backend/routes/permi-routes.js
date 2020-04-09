@@ -10,16 +10,17 @@ const router = express.Router();
 router.get('/all/society', permiControllers.getAllSocietyPermi);
 router.get('/all/early', permiControllers.getAllEarlyLeavePermi);
 router.get('/all/library', permiControllers.getAllLibraryPermi);
-// to get all permi requests made by all users (for caretakers)
-router.get('/all', permiControllers.getAllPermi);
+router.get('/all/lateentry',permiControllers.getAllLateEntryPermi);
+//router.get('/all', permiControllers.getAllPermi); // to get all permi requests made by all users (for caretakers)
 
 
-//just for testing
-router.get('/society/:pid', permiControllers.getPlaceById);
+
+//different requests of a particular creator id
+//router.get('/:creatorid', permiControllers.getsocietypermisById);
 
 
 //to get all permi requests made by a particlar user
-router.get('/user/:uid', permiControllers.getPlacesByUserId);
+//router.get('/user/:uid', permiControllers.getPlacesByUserId);
 
 
 
@@ -29,6 +30,7 @@ router.post(
  [
     check('room_num').not().isEmpty(),
     check('destination').not().isEmpty(),
+    check('creator').normalizeEmail().isEmail()
   ],
   permiControllers.createPermiEarlyLeave
 );
@@ -41,6 +43,7 @@ router.post(
     check('room_num').not().isEmpty(),
     check('intime').not().isEmpty(),
     check('outtime').not().isEmpty(),
+    check('creator').normalizeEmail().isEmail()
   ],
   permiControllers.createPermiSociety
 );
@@ -52,14 +55,22 @@ router.post(
     check('room_num').not().isEmpty(),
     check('intime').not().isEmpty(),
     check('outtime').not().isEmpty(),
+    check('creator').normalizeEmail().isEmail()
   ],
   permiControllers.createPermiLibrary
 );
 
+//updating late entry
+router.post('/lateentry',
+[
+  check('room_num').not().isEmpty(),
+  check('destination').not().isEmpty(),
+],
+permiControllers.createPermiLateEntry);
 
-//to update status pending to done society
+//to update status pending to accepted for society
 router.patch(
-  '/society/:pid',
+  '/society/:uid',
   [
     check('status').not().isEmpty(),
   ],
@@ -67,7 +78,7 @@ router.patch(
 );
 
 router.patch(
-  '/library/:pid',
+  '/library/:uid',
   [
     check('status').not().isEmpty(),
   ],
@@ -76,15 +87,16 @@ router.patch(
 
 
 router.patch(
-  '/early/:pid',
+  '/early/:uid',
   [
     check('status').not().isEmpty(),
   ],
   permiControllers.updatePermiearly
 );
 
+router.patch('/late/:uid',[check('status').not().isEmpty()],permiControllers.updatePermiLate);
 
 //to delete any permi if required (by caretaker)
-router.delete('/:pid', permiControllers.deletePlace);
+router.delete('/society/:uid', permiControllers.deletePlaceSociety);
 
 module.exports = router;
