@@ -27,15 +27,15 @@ app.use((error, req, res, next) => {
 
 
 
-app.listen(5000);
+// app.listen(5000);
 
 
 //to connect with database
-// mongoose
-//   .connect('mongodb+srv://payal:Permi_@cluster0-e49zb.mongodb.net/permis?retryWrites=true&w=majority')
-//   .then(() => {
-//     app.listen(5000);
-//   })
-//   .catch(err => {
-//     console.log(err);
-//   });
+mongoose
+  .connect('mongodb+srv://payal:Permi_@cluster0-nz0oh.mongodb.net/Permis?retryWrites=true&w=majority')
+  .then(() => {
+    app.listen(5000);
+  })
+  .catch(err => {
+    console.log(err);
+  });

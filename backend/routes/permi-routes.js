@@ -15,11 +15,11 @@ router.get('/all', permiControllers.getAllPermi);
 
 
 //just for testing
-router.get('/society/:pid', permiControllers.getPlaceById);
+router.get('/society/:pid', permiControllers.getSocietyPermiById);
 
 
 //to get all permi requests made by a particlar user
-router.get('/user/:uid', permiControllers.getPlacesByUserId);
+router.get('/user/:uid', permiControllers.getPermisByUserId);
 
 
 
