@@ -7,7 +7,7 @@ const EarlyLeaveSchema=new Schema({
     outtime:{type: String, required: true},
     status:{type: String, default: "pending"},
     date:{type:String, required:true},  //include it later
-    creator:{type: String, required: true},
+    creator:{type: mongoose.Types.ObjectId, required: true, ref:'User'},
 });
 
 module.exports=mongoose.model('EarlyLeavepermi',EarlyLeaveSchema);

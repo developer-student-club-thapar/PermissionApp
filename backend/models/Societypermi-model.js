@@ -8,8 +8,7 @@ const SocietySchema = new Schema({
     society_name: { type: String, required: true },
     status : {type : String, default: "Pending"},
     date:{type:String , required: true} ,
-    creator : { type : String , required :true},
-    // creator: { type: mongoose.Types.ObjectId, required: true, ref: 'User'}
+    creator : {type: mongoose.Types.ObjectId, required: true, ref:'User'},
 });
 
 module.exports = mongoose.model('Societypermi', SocietySchema);

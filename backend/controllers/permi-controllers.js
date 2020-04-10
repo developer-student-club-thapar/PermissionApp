@@ -3,7 +3,7 @@ const { validationResult } = require('express-validator');
 const mongoose=require('mongoose');
 const HttpError = require('../models/http-error');
 //const Societypermi = require('../models/Societypermi-model');
-const User = require('../models/user-model');
+const Users = require('../models/user-model');
 const Societypermi= require('../models/Societypermi-model');
 const EarlyLeavepermi= require('../models/EarlyLeavepermi-model');
 const Librarypermi= require('../models/Librarypermi-model');
@@ -211,7 +211,7 @@ const createPermiEarlyLeave = async(req, res, next) => {
     throw new HttpError('Invalid inputs passed, please check your data.', 422);
   }
 
-  const { room_num, destination, outtime, status, date, creator } = req.body;
+  const { room_num, destination, outtime, status, date} = req.body;
 
   
   const createdEarlyPermi = new EarlyLeavepermi({
@@ -223,15 +223,33 @@ const createPermiEarlyLeave = async(req, res, next) => {
     creator
   });
 
+  let user;
   try{
-   await createdEarlyPermi.save(); 
+  user=await Users.findById(creator);
+}catch(err)
+{
+  return next(new HttpError('Creating Permi Failed.Please Try Again.',500));
+}
+
+if(!user)
+{
+  return next(new HttpError('Could Not fid user for the provided id',404));
+}
+  try{
+    const sess=await mongoose.startSession();
+    sess.startTransaction();
+    await createdEarlyPermi.save({session:sess});
+    Users.Permis.push(createdEarlyPermi);
+    await Users.save({session:sess});
+    sess.commitTransaction();
+   
   }catch(err){
      const error=new HttpError(
        'Creating request for Early Leave Failed.Please Try Again.',500);
        return next(error);
   }
 
-  res.status(201).json({ place: createdEarlyPermi });
+  res.status(201).json({ Early_Leave: createdEarlyPermi });
 }; 
 
 
@@ -252,8 +270,25 @@ const createPermiSociety = async (req,res,next) => {
   creator
 });
 
+let user;
   try{
-    await createdPermiSociety.save();
+  user=await Users.findById(creator);
+}catch(err)
+{
+  return next(new HttpError('Creating Permi Failed.Please Try Again.',500));
+}
+
+if(!user)
+{
+  return next(new HttpError('Could Not fid user for the provided id',404));
+}
+  try{
+    const sess=await mongoose.startSession();
+    sess.startTransaction();
+    await createdEarlyPermi.save({session:sess});
+    Users.Permis.push(createdEarlyPermi);
+    await Users.save({session:sess});
+    sess.commitTransaction();
   } catch(err) {
     const error=new HttpError(
       'Creating request for society failed.Please try again.',500);
@@ -279,8 +314,25 @@ const createPermiLibrary = async(req, res, next) => {
     creator
   });
 
+  let user;
   try{
-    await createdPermiLibrary.save();
+  user=await Users.findById(creator);
+}catch(err)
+{
+  return next(new HttpError('Creating Permi Failed.Please Try Again.',500));
+}
+
+if(!user)
+{
+  return next(new HttpError('Could Not fid user for the provided id',404));
+}
+  try{
+    const sess=await mongoose.startSession();
+    sess.startTransaction();
+    await createdEarlyPermi.save({session:sess});
+    Users.Permis.push(createdEarlyPermi);
+    await Users.save({session:sess});
+    sess.commitTransaction();
   }catch(err){
     const error=new HttpError(
       'Creating request for Library failed.Please try again.',500
@@ -307,9 +359,25 @@ const createPermiLateEntry = async(req, res, next) => {
     date,
     creator
   });
-
+  let user;
   try{
-    await createdPermiLateEntry.save();
+  user=await Users.findById(creator);
+}catch(err)
+{
+  return next(new HttpError('Creating Permi Failed.Please Try Again.',500));
+}
+
+if(!user)
+{
+  return next(new HttpError('Could Not fid user for the provided id',404));
+}
+  try{
+    const sess=await mongoose.startSession();
+    sess.startTransaction();
+    await createdEarlyPermi.save({session:sess});
+    Users.Permis.push(createdEarlyPermi);
+    await Users.save({session:sess});
+    sess.commitTransaction();
   }catch(err){
     const error=new HttpError(
       'Creating request for Late Entry failed.Please try again.',500
@@ -330,20 +398,20 @@ const updatePermiSociety = async (req, res, next) => {
 
   const { status }=req.body;
   const userid=req.params.uid;
-  let iduser;
+  let id;
   try{
-    iduser=await Societypermi.find({creator:userid});
+    id=await Societypermi.findById(userid);
   }catch(err)
   {
     return next(new HttpError('Could not update. Please try Again',500));
   }
-  console.log(iduser);
-  iduser.status=status;
-  console.log(iduser);
+  //console.log(id);
+  id.status=status;
+  //console.log(id);
   try {
-    await iduser.save();
+    await id.save();
   } catch (err) {
-    const error=new HttpError('Could Not Update.Please Try Again.',500);
+    const error=new HttpError('Could Not Update.Please Try Againu.',500);
     return next(error);
   }
 
@@ -364,7 +432,7 @@ const updatePermiLibrary = async (req, res, next) => {
   const userid = req.params.uid;
   let idlib;
   try{
-    idlib=await Librarypermi.find({creator:userid});
+    idlib=await Librarypermi.findById(userid);
   }catch(err)
   {
      return next(new HttpError('Could Not Update.Please Try Again',422));
@@ -393,7 +461,7 @@ const updatePermiearly = async (req, res, next) => {
   const userid = req.params.uid;
   let id;
   try{
-    id=await EarlyLeavepermi.find({creator:userid});
+    id=await EarlyLeavepermi.findById(userid);
   }catch(err)
   {
      return next(new HttpError('Could Not Update.Please Try Again',422));
@@ -419,7 +487,7 @@ const updatePermiLate=async (req,res,next)=>{
   const userid = req.params.uid;
   let id;
   try{
-    id=await LateEntrypermi.find({creator:userid});
+    id=await LateEntrypermi.findById(userid);
   }catch(err)
   {
      return next(new HttpError('Could Not Update.Please Try Again',422));
@@ -446,7 +514,7 @@ const updatePermiLate=async (req,res,next)=>{
   let userid=req.params.uid;
   let id;
   try{
-     id= await Societypermi.find({creator:userid});
+     id= await Societypermi.findById(userid);
   }catch(err)
   {
     return next(new HttpError('Could Not delete the data.Please Try Again.,500'));
