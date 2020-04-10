@@ -7,6 +7,7 @@ const SocietySchema = new Schema({
     outtime : { type: String, required: true },
     society_name: { type: String, required: true },
     status : {type : String, default: "Pending"},
+    category : {type: String, default :"society"},
     date:{type:String , required: true} ,
     creator : {type: mongoose.Types.ObjectId, required: true, ref:'User'},
 });

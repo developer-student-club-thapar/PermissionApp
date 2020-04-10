@@ -46,7 +46,7 @@ const signup = async (req, res, next) => {
     Roll_No,
     Room_No,
     Password,
-    Permis
+    Permis :[]
   });
   
   try{

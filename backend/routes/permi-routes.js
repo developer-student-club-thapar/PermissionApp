@@ -11,7 +11,8 @@ router.get('/all/society', permiControllers.getAllSocietyPermi);
 router.get('/all/early', permiControllers.getAllEarlyLeavePermi);
 router.get('/all/library', permiControllers.getAllLibraryPermi);
 router.get('/all/lateentry',permiControllers.getAllLateEntryPermi);
-//router.get('/all', permiControllers.getAllPermi); // to get all permi requests made by all users (for caretakers)
+router.get('/all', permiControllers.getAllPermi); 
+// to get all permi requests made by all users (for caretakers)
 
 
 
@@ -20,7 +21,7 @@ router.get('/all/lateentry',permiControllers.getAllLateEntryPermi);
 
 
 //to get all permi requests made by a particlar user
-//router.get('/user/:uid', permiControllers.getPlacesByUserId);
+router.get('/user/:uid', permiControllers.getPermisByUserId);
 
 
 
@@ -30,7 +31,7 @@ router.post(
  [
     check('room_num').not().isEmpty(),
     check('destination').not().isEmpty(),
-    check('creator').normalizeEmail().isEmail()
+    // check('creator').normalizeEmail().isEmail()
   ],
   permiControllers.createPermiEarlyLeave
 );
@@ -42,8 +43,8 @@ router.post(
  [
     check('room_num').not().isEmpty(),
     check('intime').not().isEmpty(),
-    check('outtime').not().isEmpty(),
-    check('creator').normalizeEmail().isEmail()
+    check('outtime').not().isEmpty()
+    // check('creator').normalizeEmail().isEmail()
   ],
   permiControllers.createPermiSociety
 );
@@ -55,7 +56,7 @@ router.post(
     check('room_num').not().isEmpty(),
     check('intime').not().isEmpty(),
     check('outtime').not().isEmpty(),
-    check('creator').normalizeEmail().isEmail()
+    // check('creator').normalizeEmail().isEmail()
   ],
   permiControllers.createPermiLibrary
 );

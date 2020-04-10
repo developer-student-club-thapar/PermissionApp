@@ -7,6 +7,7 @@ const LateEntrySchema = new Schema({
     //outtime:{type: String, required: true},
     intime:{type: String, required: true},
     status:{type: String, default: "pending"},
+    category : {type: String, default :"late entry"},
     date:{type: String, required: true},   //include it later
     creator:{type: mongoose.Types.ObjectId, required: true, ref:'User'},
 });
