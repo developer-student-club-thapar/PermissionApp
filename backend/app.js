@@ -25,17 +25,11 @@ app.use((error, req, res, next) => {
   res.json({message: error.message || 'An unknown error occurred!'});
 });
 
+ mongoose.connect('mongodb+srv://Samiksha_14:permiapp@permissionapp-nn3fo.mongodb.net/permi?retryWrites=true&w=majority',{ useNewUrlParser: true })
+ .then(()=>app.listen(5000))
+ .catch(err=>console.log(err));
+//mongoose.connect('mongodb+srv://payal:Permi_@cluster0-nz0oh.mongodb.net/sam?retryWrites=true&w=majority',{ useNewUrlParser: true })
+//.then(()=>app.listen(5000))
+//.catch(err=>console.log(err));
 
 
-app.listen(5000);
-
-
-//to connect with database
-// mongoose
-//   .connect('mongodb+srv://payal:Permi_@cluster0-e49zb.mongodb.net/permis?retryWrites=true&w=majority')
-//   .then(() => {
-//     app.listen(5000);
-//   })
-//   .catch(err => {
-//     console.log(err);
-//   });

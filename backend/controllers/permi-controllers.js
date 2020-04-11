@@ -1,345 +1,640 @@
 const uuid = require('uuid/v4');
 const { validationResult } = require('express-validator');
-
+const mongoose=require('mongoose');
 const HttpError = require('../models/http-error');
-const Societypermi = require('../models/permi-model');
-const User = require('../models/user-model');
-
-let DUMMY_PLACES_EARLY_LEAVE = [
-  {
-    id: 'pe',
-    room_num: 'a21',
-    destination : 'homee',
-    intime : '5.00pm',
-    status: 'pending',
-    creator: 'u1'
-    // have to make status pending by default
-  }
-];
-
-let DUMMY_PERMI_SOCIETY = [
-  {
-    id: 'ps',
-    room_num: 'a21',
-    intime : '5.00pm',
-    outtime : '3pm',
-    society_name : 'uurja' , 
-    creator: 'u1',
-    status : 'pending'
-    // have to make status pending by default
-  }
-];
-
-
-let DUMMY_PERMI_LIBRARY = [
-  {
-    id: 'pl',
-    room_num: 'a21',
-    intime : '5.00pm',
-    outtime : '3pm',
-     status : 'pending',
-    creator: 'u1'
-    // have to make status pending by default
-  }
-];
-
-
-//for permi- details withouut mongodb
-const getSocietyPermiById = (req, res, next) => {
-  const placeId = req.params.pid; // { pid: 'p1' }
-
-  const place = DUMMY_PERMI_SOCIETY.find(p => {
-    return p.id === placeId;
-  });
-
-  if (!place) {
-    throw new HttpError('Could not find a place for the provided id.', 404);
-  }
-  res.json({ place });
-};
-
+const Users = require('../models/user-model');
+const Societypermi= require('../models/Societypermi-model');
+const EarlyLeavepermi= require('../models/EarlyLeavepermi-model');
+const Librarypermi= require('../models/Librarypermi-model');
+const LateEntrypermi= require('../models/LateEntrypermi-model');
 
 //display all society requests
-const getAllSocietyPermi = (req, res, next) => {
- res.json({ All_society_permis : DUMMY_PERMI_SOCIETY });
+const getAllSocietyPermi = async (req, res, next) => {
+  let society;
+  try{
+    society=await Societypermi.find({},'-category');
+  }catch(err){
+    const error=new HttpError('Not able to get the data,Please try Again',500);
+    return next(error);
+  };
+  if(!society || society.length==0)
+  {
+    const error=new HttpError('Cannot find any data',404);
+    return next(error);
+  };
+
+  res.json({society: society.map(society=>society.toObject({getters:true}))});
 };
 
 
 //display all early leave requests
-const getAllEarlyLeavePermi = (req, res, next) => {
- res.json({ All_Early_Leave_permis : DUMMY_PLACES_EARLY_LEAVE });
+const getAllEarlyLeavePermi = async (req, res, next) => {
+  let early;
+  try{
+    early=await EarlyLeavepermi.find({},'-category');
+  }catch(err){
+    return next(new HttpError('Not able to get the data.please Try Again',500));
+
+  }
+  if(!early || early.length===0)
+  {
+    throw new HttpError('Cannot find the data',404);
+  }
+
+  res.json({early_leave: early.map(early=>early.toObject({getters:true}))});
 };
 
 
 //display all library requests
-const getAllLibraryPermi = (req, res, next) => {
- res.json({ All_library_permis : DUMMY_PERMI_LIBRARY });
+const getAllLibraryPermi = async (req, res, next) => {
+  let library;
+  try{
+    library=await Librarypermi.find({},'-category');
+  }catch(err){
+    return next(new HttpError('Not able to get the data.please Try Again',500));
+
+  }
+  if(!library || library.length===0)
+  {
+    throw new HttpError('Cannot find the data',404);
+  }
+
+  res.json({Library: library.map(library=>library.toObject({getters:true}))});
 };
+
+//display all lateentry requests
+const getAllLateEntryPermi = async (req,res, next) => {
+  let late;
+  try{
+    late=await LateEntrypermi.find({},'-category');
+  }catch(err){
+    return next(new HttpError('Not able to get the data.please Try Again',500));
+
+  }
+  if(!late || late.length===0)
+  {
+    return next(new HttpError('Cannot find the data',404));
+  }
+
+  res.json({Late_entry: late.map(late=>late.toObject({getters:true}))});
+};
+
+
 
 
 //to get all the permis made by a particular user
-const getPlacesByUserId = (req, res, next) => {
+const getPermisByUserId = async (req, res, next) => {
   const userId = req.params.uid;
 
-  let permis = DUMMY_PERMI_SOCIETY.filter(p => {
-    return p.creator === userId;
-  });
-  permislib = DUMMY_PERMI_LIBRARY.filter(p => {
-    return p.creator === userId;
-  });
-  permisear =  DUMMY_PLACES_EARLY_LEAVE.filter(p => {
-    return p.creator === userId;
-  });
-
-  permis = permis.concat(permislib).concat(permisear);
-  if (!permis || permis.length === 0) {
-    return next(
-      new HttpError('Could not find places for the provided user id.', 404)
+   let permislib;
+  try {
+    permislib = await Librarypermi.find({ creator : userId });
+  } catch (err) {
+    const error = new HttpError(
+      'Fetching all library permis failed, please try again later.',
+      500
     );
+    return next(error);
+  }
+   let permissoc;
+  try {
+    permissoc = await Societypermi.find({ creator : userId });
+  } catch (err) {
+    const error = new HttpError(
+      'Fetching all society permis failed, please try again later.',
+      500
+    );
+    return next(error);
+  }
+   let permisear;
+  try {
+    permisear = await EarlyLeavepermi.find({ creator : userId });
+  } catch (err) {
+    const error = new HttpError(
+      'Fetching all library permis failed, please try again later.',
+      500
+    );
+    return next(error);
+  }
+    let permilate;
+  try {
+     permilate = await LateEntrypermi.find({ creator : userId });
+  } catch (err) {
+    const error = new HttpError(
+      'Fetching all library permis failed, please try again later.',
+      500
+    );
+    return next(error);
   }
 
-  res.json({ permis });
+  permislib= permislib.concat(permissoc).concat(permisear).concat(permilate);
+  res.json({ All_permis_by_user : permislib });
 };
 
+const getAllPermi = async (req, res, next) => {
 
-
-//to get all the permis made by all users
-const getAllPermi = (req, res, next) => {
-
-  let permis = DUMMY_PERMI_SOCIETY;
-  permislib = DUMMY_PERMI_LIBRARY;
-  permisear =  DUMMY_PLACES_EARLY_LEAVE;
-
-  permis = permis.concat(permislib).concat(permisear);
-  if (!permis || permis.length === 0) {
-    return next(
-      new HttpError('No requests', 404)
+   let permis;
+  try {
+    permis = await Librarypermi.find({} ,'-');
+  } catch (err) {
+    const error = new HttpError(
+      'Fetching all library permis failed, please try again later.',
+      500
     );
+    return next(error);
   }
-  res.json({ permis });
+   let permissoc;
+  try {
+    permissoc = await Societypermi.find({} ,'-');
+  } catch (err) {
+    const error = new HttpError(
+      'Fetching all society permis failed, please try again later.',
+      500
+    );
+    return next(error);
+  }
+   let permisear;
+  try {
+    permisear = await EarlyLeavepermi.find({} ,'-');
+  } catch (err) {
+    const error = new HttpError(
+      'Fetching all library permis failed, please try again later.',
+      500
+    );
+    return next(error);
+  }
+   let permislate;
+  try {
+    permislate = await LateEntrypermi.find({} ,'-');
+  } catch (err) {
+    const error = new HttpError(
+      'Fetching all library permis failed, please try again later.',
+      500
+    );
+    return next(error);
+  }
+
+  permis= permis.concat(permissoc).concat(permisear).concat(permislate);
+  res.json({ All_permis_by_user : permis.map(permi => permi.toObject({ getters: true }))});
 };
 
 
 
 //creation of permis early leave
-const createPermiEarlyLeave = (req, res, next) => {
+const createPermiEarlyLeave = async(req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    throw new HttpError('Invalid inputs passed, please check your data.', 422);
+    return next(new HttpError('Invalid inputs passed, please check your data.', 422));
   }
 
-  const { room_num, destination, intime, creator } = req.body;
+  const { room_num, destination, outtime,date, creator} = req.body;
 
   
-  const createdPermi = {
-    id: uuid(),
+  const createdEarlyPermi = new EarlyLeavepermi({
     room_num,
     destination,
-    intime,
+    outtime,
+    date,
     creator
-  };
+  });
 
-  DUMMY_PLACES_EARLY_LEAVE.push(createdPermi); 
+  let user;
+  try{
+  user=await Users.findById(creator);
+}catch(err)
+{
+  return next(new HttpError('Creating Permi Failed.Please Try Again.',500));
+}
 
-  res.status(201).json({ place: createdPermi });
+if(!user)
+{
+  return next(new HttpError('Could Not fid user for the provided id',404));
+}
+  try{
+    
+    const sess=await mongoose.startSession();
+    sess.startTransaction();
+    await createdEarlyPermi.save({session:sess});
+    user.Permis.push(createdEarlyPermi);
+    await user.save({session:sess});
+    sess.commitTransaction();
+   
+  }catch(err){
+     const error=new HttpError(
+       'Creating request for Early Leave Failed.Please Try Again.',500);
+       return next(error);
+  }
+
+  res.status(201).json({ Early_Leave: createdEarlyPermi });
 }; 
 
 
-//create society permi without database
-const createPermiSociety = (req, res, next) => {
+//create society permi with database
+const createPermiSociety = async (req,res,next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    throw new HttpError('Invalid inputs passed, please check your data.', 422);
+    return next(new HttpError('Invalid inputs passed, please check your data.', 422));
   }
-  const { room_num, intime, outtime, society_name, status, creator } = req.body;
-  const createdPermi = {
-    id: uuid(),
-    room_num,
-    intime,
-    outtime,
-    society_name,
-    status,
-    creator
-  };
+  const {room_num, intime, outtime, society_name, date,creator}=req.body;
+  const createdPermiSociety= new Societypermi({
+  room_num,
+  intime,
+  outtime,
+  society_name,
+  date,
+  creator
+});
 
-  DUMMY_PERMI_SOCIETY.push(createdPermi);
+let user;
+  try{
+  user=await Users.findById(creator);
+}catch(err)
+{
+  return next(new HttpError('Creating Permi Failed.Please Try Again.',500));
+}
 
-  res.status(201).json({ place: createdPermi });
+if(!user)
+{
+  return next(new HttpError('Could Not find user for the provided id',404));
+}
+  try{
+    const sess=await mongoose.startSession();
+    sess.startTransaction();
+    await createdPermiSociety.save({session:sess});
+    user.Permis.push(createdPermiSociety);
+    await user.save({session:sess});
+    sess.commitTransaction();
+  } catch(err) {
+    const error= new HttpError(
+      'Creating request for society failed.Please try again.',500);
+    return next(error);
+  }
+  res.status(201).json({ place: createdPermiSociety });
 };
 
 
 //create permi for library
-const createPermiLibrary = (req, res, next) => {
+const createPermiLibrary = async(req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    throw new HttpError('Invalid inputs passed, please check your data.', 422);
+    return next(new HttpError('Invalid inputs passed, please check your data.', 422));
   }
-  const { room_num, intime, outtime,status,creator } = req.body;
-  const createdPermi = {
-    id: uuid(),
+  const { room_num, intime, outtime,date,creator } = req.body;
+  const createdPermiLibrary = new Librarypermi({
     room_num,
     intime,
     outtime,
-    status,
+    date,
     creator
-  };
+  });
 
-  DUMMY_PERMI_LIBRARY.push(createdPermi);
+  let user;
+  try{
+  user=await Users.findById(creator);
+}catch(err)
+{
+  return next(new HttpError('Creating Permi Failed.Please Try Again.',500));
+}
 
-  res.status(201).json({ place: createdPermi });
+if(!user)
+{
+  return next(new HttpError('Could Not fid user for the provided id',404));
+}
+  try{
+    const sess=await mongoose.startSession();
+    sess.startTransaction();
+    await createdPermiLibrary.save({session:sess});
+    user.Permis.push(createdPermiLibrary);
+    await user.save({session:sess});
+    sess.commitTransaction();
+  }catch(err){
+    const error=new HttpError(
+      'Creating request for Library failed.Please try again.',500
+    );
+    return next(error);
+  }
+
+  res.status(201).json({ place: createdPermiLibrary });
+};
+
+//creating permis for lateentry
+const createPermiLateEntry = async(req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(new HttpError('Invalid inputs passed, please check your data.', 422));
+  }
+  const { room_num, destination, intime, outtime,date,creator } = req.body;
+  const createdPermiLateEntry = new LateEntrypermi({
+    room_num,
+    destination,
+    outtime,
+    intime,
+    date,
+    creator
+  });
+  let user;
+  try{
+  user=await Users.findById(creator);
+}catch(err)
+{
+  return next(new HttpError('Creating Permi Failed.Please Try Again.',500));
+}
+
+if(!user)
+{
+  return next(new HttpError('Could Not fid user for the provided id',404));
+}
+  try{
+    const sess=await mongoose.startSession();
+    sess.startTransaction();
+    await createdPermiLateEntry.save({session:sess});
+    user.Permis.push(createdPermiLateEntry);
+    await user.save({session:sess});
+    sess.commitTransaction();
+  }catch(err){
+    const error=new HttpError(
+      'Creating request for Late Entry failed.Please try again.',500
+    );
+    return next(error);
+  }
+
+  res.status(201).json({ place: createdPermiLateEntry });
 };
 
 
-
-// update status pending to done (society) without db
-const updatePermiSociety = (req, res, next) => {
+// update status pending to done (society) 
+const updatePermiSociety = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    throw new HttpError('Invalid inputs passed, please check your data.', 422);
+    return next(new HttpError('Invalid inputs passed, please check your data.', 422));
   }
 
-  const { status } = req.body;
-  const placeId = req.params.pid;
+  const { status }=req.body;
+  const userid=req.params.uid;
+  let id;
+  try{
+    id=await Societypermi.findById(userid);
+  }catch(err)
+  {
+    return next(new HttpError('Could not update. Please try Again',500));
+  }
+  //console.log(id);
+  id.status=status;
+  //console.log(id);
+  try {
+    await id.save();
+  } catch (err) {
+    const error=new HttpError('Could Not Update.Please Try Againu.',500);
+    return next(error);
+  }
 
-  const updatedPermi = { ...DUMMY_PERMI_SOCIETY.find(p => p.id === placeId) };
-  const placeIndex = DUMMY_PERMI_SOCIETY.findIndex(p => p.id === placeId);
-  updatedPermi.status = status;
-
-  DUMMY_PERMI_SOCIETY[placeIndex] = updatedPermi;
-
-  res.status(200).json({ place: updatedPermi });
+  res.status(200).json({ society: id.toObject({getters:true}) });  
 };
 
 
 
 
 // update status pending to done (library)
-const updatePermiLibrary = (req, res, next) => {
+const updatePermiLibrary = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    throw new HttpError('Invalid inputs passed, please check your data.', 422);
+    return next(new HttpError('Invalid inputs passed, please check your data.', 422));
   }
 
   const { status } = req.body;
-  const placeId = req.params.pid;
+  const userid = req.params.uid;
+  let idlib;
+  try{
+    idlib=await Librarypermi.findById(userid);
+  }catch(err)
+  {
+     return next(new HttpError('Could Not Update.Please Try Again',422));
+  }
 
-  const updatedPermi = { ...DUMMY_PERMI_LIBRARY.find(p => p.id === placeId) };
-  const placeIndex = DUMMY_PERMI_LIBRARY.findIndex(p => p.id === placeId);
-  updatedPermi.status = status;
+  idlib.status=status;
+  try{
+     await idlib.save();
+  }catch(err){
+    return next(new HttpError('Could Not Update. Please Try Again.',422));
+  }
 
-  DUMMY_PERMI_LIBRARY[placeIndex] = updatedPermi;
-
-  res.status(200).json({ place: updatedPermi });
+  res.status(200).json({ library: idlib.toObject({getters:true}) });
 };
 
 
 
 // update status pending to done (early leave)
-const updatePermiearly = (req, res, next) => {
+const updatePermiearly = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    throw new HttpError('Invalid inputs passed, please check your data.', 422);
+    return next(new HttpError('Invalid inputs passed, please check your data.', 422));
   }
 
   const { status } = req.body;
-  const placeId = req.params.pid;
-
-  const updatedPermi = { ...DUMMY_PLACES_EARLY_LEAVE.find(p => p.id === placeId) };
-  const placeIndex = DUMMY_PLACES_EARLY_LEAVE.findIndex(p => p.id === placeId);
-  updatedPermi.status = status;
-
-  DUMMY_PLACES_EARLY_LEAVE[placeIndex] = updatedPermi;
-
-  res.status(200).json({ place: updatedPermi });
-};
-
-
-// to delete permi
-const deletePlace = (req, res, next) => {
-  const placeId = req.params.pid;
-  if (!DUMMY_PLACES_EARLY_LEAVE.find(p => p.id === placeId)) {
-    throw new HttpError('Could not find a place for that id.', 404);
+  const userid = req.params.uid;
+  let id;
+  try{
+    id=await EarlyLeavepermi.findById(userid);
+  }catch(err)
+  {
+     return next(new HttpError('Could Not Update.Please Try Again',422));
   }
-  DUMMY_PLACES_EARLY_LEAVE = DUMMY_PLACES_EARLY_LEAVE.filter(p => p.id !== placeId);
-  res.status(200).json({ message: 'Deleted place.' });
+
+  id.status=status;
+  try{
+     await id.save();
+  }catch(err){
+    return next(new HttpError('Could Not Update. Please Try Again.',422));
+  }
+
+  res.status(200).json({ Early_Leave: id.toObject({getters:true}) });
 };
 
+const updatePermiLate=async (req,res,next)=>{
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(new HttpError('Invalid inputs passed, please check your data.', 422));
+  }
 
+  const { status } = req.body;
+  const userid = req.params.uid;
+  let id;
+  try{
+    id=await LateEntrypermi.findById(userid);
+  }catch(err)
+  {
+     return next(new HttpError('Could Not Update.Please Try Again',422));
+  }
 
-exports.getPlaceById = getSocietyPermiById;
+  id.status=status;
+  try{
+     await id.save();
+  }catch(err){
+    return next(new HttpError('Could Not Update. Please Try Again.',422));
+  }
+
+  res.status(200).json({ late_Entry: id.toObject({getters:true}) });
+
+}
+
+ const deleteUserSociety = async(req,res,next)=>{
+  const errors=validationResult(req);
+  if(!errors.isEmpty())
+  {
+    return next(new HttpError('Invalid inputs passed.Please Check Your Data',422));
+  }
+
+  let userid=req.params.uid;
+  let id;
+  try{
+     id= await Societypermi.findById(userid).populate('creator');
+  }catch(err)
+  {
+    return next(new HttpError('Could Not delete the data.Please Try Again.',500));
+  }
+
+  if(!id)
+  {
+    return next(new HttpError('Could not find data for this id',404));
+  }
+
+  try{
+    const sess=await mongoose.startSession();
+    sess.commitTransaction();
+    await id.remove({session:sess});
+    await id.creator.Permis.pull(id);
+    await id.creator.save({session:sess});
+    sess.commitTransaction();
+  }catch(err)
+  {
+    return next(new HttpError('Could Not Delete the data.Please Try Again.',500));
+  }
+
+  res.status(200).json({message: 'Data Deleted'});
+}
+
+const deleteUserLibrary= async(req,res,next)=>{
+  const errors=validationResult(req);
+  if(!errors.isEmpty())
+  {
+    return next(new HttpError('Invalid inputs passed.Please Check Your Data',500));
+  }
+
+  let userid=req.params.uid;
+  let user;
+  try {
+    user=await Librarypermi.findById(userid).populate('creator');
+  } catch (error) {
+    return next(new HttpError('Could Not delete the data.Please Try Again.',500));
+  }
+  if(!user)
+  {
+    return next(new HttpError('Could not find data for this id',404));
+  }
+
+  try{
+    const sess=await mongoose.startSession();
+    sess.commitTransaction();
+    await user.remove({session:sess});
+    await user.creator.Permis.pull(user);
+    await user.creator.save({session:sess});
+    sess.commitTransaction();
+  }catch(err){
+    return next(new HttpError('Could Not Delete the data.Please Try Again.',500));
+  };
+
+  res.status(200).json({message: 'Deleted Data' });
+}
+
+const deleteUserLate= async(req,res,next)=>{
+  const errors=validationResult(req);
+  if(!errors.isEmpty())
+  {
+    return next(new HttpError('Invalid inputs passed.Please Check Your Data',500));
+  }
+
+  let userid=req.params.uid;
+  let user;
+  try {
+    user=await LateEntrypermi.findById(userid).populate('creator');
+  } catch (error) {
+    return next(new HttpError('Could Not delete the data.Please Try Again.',500));
+  }
+
+  if(!user)
+  {
+    return next(new HttpError('Could not find data for this id',404));
+  }
+
+  try{
+    const sess=await mongoose.startSession();
+    sess.commitTransaction();
+    await user.remove({session:sess});
+    await user.creator.Permis.pull(user);
+    await user.creator.save({session:sess});
+    sess.commitTransaction();
+  }catch(err){
+    return next(new HttpError('Could Not Delete the data.Please Try Again.',500));
+  };
+
+  res.status(200).json({message: 'Deleted Data' });
+}
+
+const deleteUserEarly= async(req,res,next)=>{
+  const errors=validationResult(req);
+  if(!errors.isEmpty())
+  {
+    return next(new HttpError('Invalid inputs passed.Please Check Your Data',500));
+  }
+
+  let userid=req.params.uid;
+  let user;
+  try {
+    user=await EarlyLeavepermi.findById(userid).populate('creator');
+  } catch (error) {
+    return next(new HttpError('Could Not delete the data.Please Try Again.',500));
+  }
+
+  if(!user)
+  {
+    return next(new HttpError('Could not find data for this id',404));
+  }
+
+  try{
+    const sess=await mongoose.startSession();
+    sess.commitTransaction();
+    await user.remove({session:sess});
+    await user.creator.Permis.pull(user);
+    await user.creator.save({session:sess});
+    sess.commitTransaction();
+  }catch(err){
+    return next(new HttpError('Could Not Delete the data.Please Try Again.',500));
+  };
+
+  res.status(200).json({message: 'Deleted Data' });
+}
+
+//exports.getPlaceById = getSocietyPermiById;
 
 exports.getAllSocietyPermi = getAllSocietyPermi;
 exports.getAllEarlyLeavePermi = getAllEarlyLeavePermi;
 exports.getAllLibraryPermi = getAllLibraryPermi;
-
-exports.getPlacesByUserId = getPlacesByUserId;
+exports.getAllLateEntryPermi=getAllLateEntryPermi;
+exports.getAllPermi=getAllPermi;
+exports.getPermisByUserId = getPermisByUserId;
 
 exports.createPermiEarlyLeave = createPermiEarlyLeave;
 exports.createPermiSociety = createPermiSociety;
 exports.createPermiLibrary = createPermiLibrary;
+exports.createPermiLateEntry=createPermiLateEntry;
 
 exports.updatePermiSociety = updatePermiSociety;
 exports.updatePermiLibrary =updatePermiLibrary;
 exports.updatePermiearly = updatePermiearly;
+exports.updatePermiLate=updatePermiLate;
 
-exports.deletePlace = deletePlace;
-exports.getAllPermi = getAllPermi ;
+exports.deleteUserSociety = deleteUserSociety;
+exports.deleteUserLibrary = deleteUserLibrary;
+exports.deleteUserLate = deleteUserLate;
+exports.deleteUserEarly = deleteUserEarly;
 
-
-
-
-// with mongodb
-// const getSocietyPermiById = async (req, res, next) => {
-//   const placeId = req.params.pid;
-
-//   let place;
-//   try {
-//     place = await Societypermi.findById(placeId);
-//   } catch (err) {
-//     const error = new HttpError(
-//       'Something went wrong, could not find a place.',
-//       500
-//     );
-//     return next(error);
-//   }
-
-//   if (!place) {
-//     const error = new HttpError(
-//       'Could not find a place for the provided id.',
-//       404
-//     );
-//     return next(error);
-//   }
-
-//   res.json({ place: place.toObject({ getters: true }) });
-// };
-
-
-// creating permi with database
-// const createPermiSociety = async (req, res, next) => {
-//   const errors = validationResult(req);
-//   if (!errors.isEmpty()) {
-//     throw new HttpError('Invalid inputs passed, please check your data.', 422);
-//   }
-//   const { room_num, intime, outtime, society_name, status, creator } = req.body;
-//   const createdPermi = new Societypermi({
-//     room_num,
-//     intime,
-//     outtime,
-//     society_name,
-//     status,
-//     creator
-//   });
-
-//    try { 
-//     await createdPermi.save();;
-//   } catch (err) {
-//     const error = new HttpError(
-//       'Creating place failed, please try again.',
-//       500
-//     );
-//     return next(error);
-//   }
-
-//   res.status(201).json({ place: createdPermi });
-// };
