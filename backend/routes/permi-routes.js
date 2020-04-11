@@ -98,6 +98,9 @@ router.patch(
 router.patch('/late/:uid',[check('status').not().isEmpty()],permiControllers.updatePermiLate);
 
 //to delete any permi if required (by caretaker)
-router.delete('/society/:uid', permiControllers.deletePlaceSociety);
+router.delete('/society/:uid', permiControllers.deleteUserSociety);
+router.delete('/library/:uid', permiControllers.deleteUserLibrary);
+router.delete('/earlyleave/:uid', permiControllers.deleteUserEarly);
+router.delete('/lateentry/:uid', permiControllers.deleteUserLate);
 
 module.exports = router;

@@ -10,7 +10,6 @@ const userSchema=new Schema({
     Password:{type:String,required:true,minlength:6},
     Permis:[{type: mongoose.Types.ObjectId, required: true, ref:['LateEntrypermi','Librarypermi',
     'Societypermi','EarlyLeavepermi']}],
-    //ref:'LibraryPermi',ref:'SocietyPermi',ref:'EarlyLeavePermi'}]
 });
 userSchema.plugin(uniquevalidator);
 module.exports=mongoose.model('User',userSchema);

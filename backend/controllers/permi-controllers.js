@@ -2,66 +2,11 @@ const uuid = require('uuid/v4');
 const { validationResult } = require('express-validator');
 const mongoose=require('mongoose');
 const HttpError = require('../models/http-error');
-//const Societypermi = require('../models/Societypermi-model');
 const Users = require('../models/user-model');
 const Societypermi= require('../models/Societypermi-model');
 const EarlyLeavepermi= require('../models/EarlyLeavepermi-model');
 const Librarypermi= require('../models/Librarypermi-model');
 const LateEntrypermi= require('../models/LateEntrypermi-model');
-/*let DUMMY_PLACES_EARLY_LEAVE = [
-  {
-    id: 'pe',
-    room_num: 'a21',
-    destination : 'homee',
-    intime : '5.00pm',
-    status: 'pending',
-    creator: 'u1'
-    // have to make status pending by default
-  }
-];
-
-let DUMMY_PERMI_SOCIETY = [
-  {
-    id: 'ps',
-    room_num: 'a21',
-    intime : '5.00pm',
-    outtime : '3pm',
-    society_name : 'urja' , 
-    creator: 'u1',
-    status : 'pending'
-    // have to make status pending by default
-  }
-];
-
-
-let DUMMY_PERMI_LIBRARY = [
-  {
-    id: 'p1',
-    room_num: 'a21',
-    intime : '5.00pm',
-    outtime : '3pm',
-     status : 'pending',
-    creator: 'u1'
-    // have to make status pending by default
-  }
-];
-
-
-//for permi- details withouut mongodb
-const getSocietyPermiById = (req, res, next) => {
-  //this is used when we need to find the details of a particular student
-  /*const personId = req.params.pid; // { pid: 'p1' }
-
-  const person = DUMMY_PERMI_SOCIETY.find(p => {
-    return p.id === personId;
-  });
-
-  if (!person) {
-    throw new HttpError('Could not find a place for the provided id.', 404);
-  }
-  res.json({ person });}*/
-  
-
 
 //display all society requests
 const getAllSocietyPermi = async (req, res, next) => {
@@ -88,7 +33,7 @@ const getAllEarlyLeavePermi = async (req, res, next) => {
   try{
     early=await EarlyLeavepermi.find({},'-category');
   }catch(err){
-    throw new HttpError('Not able to get the data.please Try Again',500);
+    return next(new HttpError('Not able to get the data.please Try Again',500));
 
   }
   if(!early || early.length===0)
@@ -106,7 +51,7 @@ const getAllLibraryPermi = async (req, res, next) => {
   try{
     library=await Librarypermi.find({},'-category');
   }catch(err){
-    throw new HttpError('Not able to get the data.please Try Again',500);
+    return next(new HttpError('Not able to get the data.please Try Again',500));
 
   }
   if(!library || library.length===0)
@@ -186,23 +131,6 @@ const getPermisByUserId = async (req, res, next) => {
   res.json({ All_permis_by_user : permislib });
 };
 
-
-//to get all the permis made by all users
-/*const getAllPermi = (req, res, next) => {
-
-  let permis = DUMMY_PERMI_SOCIETY;
-  permislib = DUMMY_PERMI_LIBRARY;
-  permisear =  DUMMY_PLACES_EARLY_LEAVE;
-
-  permis = permis.concat(permislib).concat(permisear);
-  if (!permis || permis.length === 0) {
-    return next(
-      new HttpError('No requests', 404)
-    );
-  }
-  res.json({ permis });
-};
-*/
 const getAllPermi = async (req, res, next) => {
 
    let permis;
@@ -256,7 +184,7 @@ const getAllPermi = async (req, res, next) => {
 const createPermiEarlyLeave = async(req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    throw new HttpError('Invalid inputs passed, please check your data.', 422);
+    return next(new HttpError('Invalid inputs passed, please check your data.', 422));
   }
 
   const { room_num, destination, outtime,date, creator} = req.body;
@@ -327,7 +255,7 @@ let user;
 
 if(!user)
 {
-  return next(new HttpError('Could Not fid user for the provided id',404));
+  return next(new HttpError('Could Not find user for the provided id',404));
 }
   try{
     const sess=await mongoose.startSession();
@@ -349,7 +277,7 @@ if(!user)
 const createPermiLibrary = async(req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    throw new HttpError('Invalid inputs passed, please check your data.', 422);
+    return next(new HttpError('Invalid inputs passed, please check your data.', 422));
   }
   const { room_num, intime, outtime,date,creator } = req.body;
   const createdPermiLibrary = new Librarypermi({
@@ -373,9 +301,6 @@ if(!user)
   return next(new HttpError('Could Not fid user for the provided id',404));
 }
   try{
-    //  await createdPermiLibrary.save();
-    // user.Permis.push(createdPermiLibrary);
-    // await user.save();
     const sess=await mongoose.startSession();
     sess.startTransaction();
     await createdPermiLibrary.save({session:sess});
@@ -396,7 +321,7 @@ if(!user)
 const createPermiLateEntry = async(req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    throw new HttpError('Invalid inputs passed, please check your data.', 422);
+    return next(new HttpError('Invalid inputs passed, please check your data.', 422));
   }
   const { room_num, destination, intime, outtime,date,creator } = req.body;
   const createdPermiLateEntry = new LateEntrypermi({
@@ -441,7 +366,7 @@ if(!user)
 const updatePermiSociety = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    throw new HttpError('Invalid inputs passed, please check your data.', 422);
+    return next(new HttpError('Invalid inputs passed, please check your data.', 422));
   }
 
   const { status }=req.body;
@@ -473,7 +398,7 @@ const updatePermiSociety = async (req, res, next) => {
 const updatePermiLibrary = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    throw new HttpError('Invalid inputs passed, please check your data.', 422);
+    return next(new HttpError('Invalid inputs passed, please check your data.', 422));
   }
 
   const { status } = req.body;
@@ -502,7 +427,7 @@ const updatePermiLibrary = async (req, res, next) => {
 const updatePermiearly = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    throw new HttpError('Invalid inputs passed, please check your data.', 422);
+    return next(new HttpError('Invalid inputs passed, please check your data.', 422));
   }
 
   const { status } = req.body;
@@ -552,7 +477,7 @@ const updatePermiLate=async (req,res,next)=>{
 
 }
 
- const deletePlaceSociety = async(req,res,next)=>{
+ const deleteUserSociety = async(req,res,next)=>{
   const errors=validationResult(req);
   if(!errors.isEmpty())
   {
@@ -562,20 +487,131 @@ const updatePermiLate=async (req,res,next)=>{
   let userid=req.params.uid;
   let id;
   try{
-     id= await Societypermi.findById(userid);
+     id= await Societypermi.findById(userid).populate('creator');
   }catch(err)
   {
-    return next(new HttpError('Could Not delete the data.Please Try Again.,500'));
+    return next(new HttpError('Could Not delete the data.Please Try Again.',500));
+  }
+
+  if(!id)
+  {
+    return next(new HttpError('Could not find data for this id',404));
   }
 
   try{
-    await id.remove();
+    const sess=await mongoose.startSession();
+    sess.commitTransaction();
+    await id.remove({session:sess});
+    await id.creator.Permis.pull(id);
+    await id.creator.save({session:sess});
+    sess.commitTransaction();
   }catch(err)
   {
     return next(new HttpError('Could Not Delete the data.Please Try Again.',500));
   }
 
   res.status(200).json({message: 'Data Deleted'});
+}
+
+const deleteUserLibrary= async(req,res,next)=>{
+  const errors=validationResult(req);
+  if(!errors.isEmpty())
+  {
+    return next(new HttpError('Invalid inputs passed.Please Check Your Data',500));
+  }
+
+  let userid=req.params.uid;
+  let user;
+  try {
+    user=await Librarypermi.findById(userid).populate('creator');
+  } catch (error) {
+    return next(new HttpError('Could Not delete the data.Please Try Again.',500));
+  }
+  if(!user)
+  {
+    return next(new HttpError('Could not find data for this id',404));
+  }
+
+  try{
+    const sess=await mongoose.startSession();
+    sess.commitTransaction();
+    await user.remove({session:sess});
+    await user.creator.Permis.pull(user);
+    await user.creator.save({session:sess});
+    sess.commitTransaction();
+  }catch(err){
+    return next(new HttpError('Could Not Delete the data.Please Try Again.',500));
+  };
+
+  res.status(200).json({message: 'Deleted Data' });
+}
+
+const deleteUserLate= async(req,res,next)=>{
+  const errors=validationResult(req);
+  if(!errors.isEmpty())
+  {
+    return next(new HttpError('Invalid inputs passed.Please Check Your Data',500));
+  }
+
+  let userid=req.params.uid;
+  let user;
+  try {
+    user=await LateEntrypermi.findById(userid).populate('creator');
+  } catch (error) {
+    return next(new HttpError('Could Not delete the data.Please Try Again.',500));
+  }
+
+  if(!user)
+  {
+    return next(new HttpError('Could not find data for this id',404));
+  }
+
+  try{
+    const sess=await mongoose.startSession();
+    sess.commitTransaction();
+    await user.remove({session:sess});
+    await user.creator.Permis.pull(user);
+    await user.creator.save({session:sess});
+    sess.commitTransaction();
+  }catch(err){
+    return next(new HttpError('Could Not Delete the data.Please Try Again.',500));
+  };
+
+  res.status(200).json({message: 'Deleted Data' });
+}
+
+const deleteUserEarly= async(req,res,next)=>{
+  const errors=validationResult(req);
+  if(!errors.isEmpty())
+  {
+    return next(new HttpError('Invalid inputs passed.Please Check Your Data',500));
+  }
+
+  let userid=req.params.uid;
+  let user;
+  try {
+    user=await EarlyLeavepermi.findById(userid).populate('creator');
+  } catch (error) {
+    return next(new HttpError('Could Not delete the data.Please Try Again.',500));
+  }
+
+  if(!user)
+  {
+    return next(new HttpError('Could not find data for this id',404));
+  }
+
+  try{
+    const sess=await mongoose.startSession();
+    sess.commitTransaction();
+    await user.remove({session:sess});
+    await user.creator.Permis.pull(user);
+    await user.creator.save({session:sess});
+    sess.commitTransaction();
+  }catch(err){
+    return next(new HttpError('Could Not Delete the data.Please Try Again.',500));
+  };
+
+  res.status(200).json({message: 'Deleted Data' });
 }
 
 //exports.getPlaceById = getSocietyPermiById;
@@ -585,7 +621,6 @@ exports.getAllEarlyLeavePermi = getAllEarlyLeavePermi;
 exports.getAllLibraryPermi = getAllLibraryPermi;
 exports.getAllLateEntryPermi=getAllLateEntryPermi;
 exports.getAllPermi=getAllPermi;
-
 exports.getPermisByUserId = getPermisByUserId;
 
 exports.createPermiEarlyLeave = createPermiEarlyLeave;
@@ -598,63 +633,8 @@ exports.updatePermiLibrary =updatePermiLibrary;
 exports.updatePermiearly = updatePermiearly;
 exports.updatePermiLate=updatePermiLate;
 
-exports.deletePlaceSociety = deletePlaceSociety;
+exports.deleteUserSociety = deleteUserSociety;
+exports.deleteUserLibrary = deleteUserLibrary;
+exports.deleteUserLate = deleteUserLate;
+exports.deleteUserEarly = deleteUserEarly;
 
-
-
-
-// with mongodb
-// const getSocietyPermiById = async (req, res, next) => {
-//   const placeId = req.params.pid;
-
-//   let place;
-//   try {
-//     place = await Societypermi.findById(placeId);
-//   } catch (err) {
-//     const error = new HttpError(
-//       'Something went wrong, could not find a place.',
-//       500
-//     );
-//     return next(error);
-//   }
-
-//   if (!place) {
-//     const error = new HttpError(
-//       'Could not find a place for the provided id.',
-//       404
-//     );
-//     return next(error);
-//   }
-
-//   res.json({ place: place.toObject({ getters: true }) });
-// };
-
-
-// creating permi with database
-// const createPermiSociety = async (req, res, next) => {
-//   const errors = validationResult(req);
-//   if (!errors.isEmpty()) {
-//     throw new HttpError('Invalid inputs passed, please check your data.', 422);
-//   }
-//   const { room_num, intime, outtime, society_name, status, creator } = req.body;
-//   const createdPermi = new Societypermi({
-//     room_num,
-//     intime,
-//     outtime,
-//     society_name,
-//     status,
-//     creator
-//   });
-
-//    try { 
-//     await createdPermi.save();;
-//   } catch (err) {
-//     const error = new HttpError(
-//       'Creating place failed, please try again.',
-//       500
-//     );
-//     return next(error);
-//   }
-
-//   res.status(201).json({ place: createdPermi });
-// };

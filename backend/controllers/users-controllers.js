@@ -4,15 +4,6 @@ const { validationResult } = require('express-validator');
 const Users=require('../models/user-model');
 const HttpError = require('../models/http-error');
 
-/*const DUMMY_USERS = [
-  {
-    id: 'u1',
-    name: 'Max Schwarz',
-    email: 'test@test.com',
-    password: 'testers'
-  }
-];*/
-
 const getUsers = async (req, res, next) => {
   let users;
   try{
@@ -28,7 +19,7 @@ const signup = async (req, res, next) => {
   if (!errors.isEmpty()) {
     return next(new HttpError('Invalid inputs passed, please check your data.', 422));
   }
-  const { Name, Email_id, Roll_No, Room_No, Password ,Permis} = req.body;
+  const { Name, Email_id, Roll_No, Room_No, Password} = req.body;
   let existingUser;
   try{
      existingUser=await Users.findOne({Email_id:Email_id});
