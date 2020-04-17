@@ -76,11 +76,11 @@ const Society = props => {
 		function func() {
 			setFormData({
 				Category: "Late Entry",
-				RoomNumber: formState.inputs.roomNumber.value,
+				room_num: formState.inputs.room_num.value,
 				Date: formState.inputs.date.value,
 				TimeLeave: formState.inputs.timeLeave.value,
 				TimeEntry: formState.inputs.timeEntry.value,
-				SocietyName: formState.inputs.societyName.value
+				society_name: formState.inputs.society_name.value
 			});
 		}
 		if (clicked) {
@@ -91,7 +91,16 @@ const Society = props => {
 	//to reset navigate to status page whenever form data changes and clicked is true.
 	useEffect(() => {
 		if (clicked) {
-			console.log(formData);
+			sendRequest('http://localhost:5000/api/permi/society','POST',JSON.stringify({
+				room_num: formState.inputs.room_num.value,
+				society_name: formState.inputs.society_name.value,
+				outtime: formState.inputs.outtime.value,
+				intime: formState.inputs.intime.value,
+				date: formState.inputs.date.value
+				//to be added creator,userid-hooks
+			}),
+			{ 'Content-Type': 'application/json'}
+			);
 			props.navigation.navigate("Status");
 			setClick(false);
 		}
@@ -99,7 +108,7 @@ const Society = props => {
 
 	const [formState, dispatch] = useReducer(formReducer, {
 		inputs: {
-			roomNumber: {
+			room_num: {
 				value: "",
 				isValid: false
 			},
@@ -155,7 +164,7 @@ const Society = props => {
 						errorText='Please enter your room no.'
 						onInput={inputHandler}
 						afterSubmit={formData}
-						id='roomNumber'
+						id='room_num'
 					/>
 					<Date
 						iconName='calendar'

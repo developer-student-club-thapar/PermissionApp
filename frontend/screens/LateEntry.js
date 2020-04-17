@@ -8,6 +8,7 @@ import Input from "../components/ui/Input";
 import { VALIDATOR_REQUIRE } from "../components/Validator";
 import Date from "../components/ui/Date";
 import Time from "../components/ui/Time";
+import { application } from "express";
 
 //wait function to return back a promise after refreshing the screen on pulling down
 function wait(timeout) {
@@ -66,7 +67,7 @@ const LateEntry = props => {
 		function func() {
 			setFormData({
 				Category: "Late Entry",
-				RoomNumber: formState.inputs.roomNumber.value,
+				room_num: formState.inputs.room_num.value,
 				Date: formState.inputs.date.value,
 				Time: formState.inputs.time.value,
 				Place: formState.inputs.location.value
@@ -80,15 +81,24 @@ const LateEntry = props => {
 	//to reset navigate to status page whenever form data changes and clicked is true.
 	useEffect(() => {
 		if (clicked) {
-			console.log(formData);
+			sendRequest('http://localhost:5000/api/permi/lateentry','POST',JSON.stringify({
+				room_num: formState.inputs.room_num.value,
+				destination: formState.inputs.destination.value,
+				outtime: formState.inputs.outtime.value,
+				intime: formState.inputs.intime.value,
+				date: formState.inputs.date.value
+				//to be added creator,userid-hooks
+			}),
+			{ 'Content-Type': 'application/json'}
+			);
 			props.navigation.navigate("Status");
 			setClick(false);
 		}
-	}, [formData]);
+	}, [formData]) ;
 
 	const [formState, dispatch] = useReducer(formReducer, {
 		inputs: {
-			roomNumber: {
+			room_num: {
 				value: "",
 				isValid: false
 			},
@@ -139,7 +149,7 @@ const LateEntry = props => {
 						errorText='Please enter your room no.'
 						onInput={inputHandler}
 						afterSubmit={formData}
-						id='roomNumber'
+						id='room_num'
 					/>
 					<Date
 						iconName='calendar'
