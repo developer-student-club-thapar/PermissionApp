@@ -7,7 +7,7 @@ import {
 	Text,
 	TextInput,
 	Image,
-	RefreshControl
+	RefreshControl,
 } from "react-native";
 import ButtonFilled from "../components/ButtonFilled";
 import AppHeader from "../components/navigation/Header";
@@ -21,7 +21,7 @@ import Time from "../components/ui/Time";
 
 //wait function to return back a promise after refreshing the screen on pulling down
 function wait(timeout) {
-	return new Promise(resolve => {
+	return new Promise((resolve) => {
 		setTimeout(resolve, timeout);
 	});
 }
@@ -42,9 +42,9 @@ const formReducer = (state, action) => {
 				...state,
 				inputs: {
 					...state.inputs,
-					[action.inputId]: { value: action.value, isValid: action.isValid }
+					[action.inputId]: { value: action.value, isValid: action.isValid },
 				},
-				isValid: formIsValid
+				isValid: formIsValid,
 			};
 
 		default:
@@ -53,7 +53,7 @@ const formReducer = (state, action) => {
 };
 
 //This is the main function consisting of all the functionality of Society screen.
-const Society = props => {
+const Society = (props) => {
 	//For refreshing the screen on pulling down
 	const [refreshing, setRefreshing] = React.useState(false);
 	const onRefresh = React.useCallback(() => {
@@ -67,7 +67,7 @@ const Society = props => {
 	const [clicked, setClick] = useState(false);
 
 	// function for the submit button
-	const onClickHandler = index => {
+	const onClickHandler = (index) => {
 		setClick(true);
 	};
 
@@ -80,7 +80,7 @@ const Society = props => {
 				Date: formState.inputs.date.value,
 				TimeLeave: formState.inputs.timeLeave.value,
 				TimeEntry: formState.inputs.timeEntry.value,
-				SocietyName: formState.inputs.societyName.value
+				SocietyName: formState.inputs.societyName.value,
 			});
 		}
 		if (clicked) {
@@ -90,37 +90,64 @@ const Society = props => {
 
 	//to reset navigate to status page whenever form data changes and clicked is true.
 	useEffect(() => {
-		if (clicked) {
-			console.log(formData);
-			props.navigation.navigate("Status");
-			setClick(false);
+		async function fetchData() {
+			if (clicked) {
+				//console.log(formData);
+				try {
+					const response = await fetch(
+						"http://192.168.43.33:5000/api/permi/society/",
+						{
+							method: "POST",
+							headers: {
+								Accept: "application/json",
+								"Content-Type": "application/json",
+							},
+							body: JSON.stringify({
+								room_num: formState.inputs.roomNumber.value,
+								outtime: formState.inputs.timeLeave.value,
+								date: formState.inputs.date.value,
+								intime: formState.inputs.timeEntry.value,
+								society_name: formState.inputs.societyName.value,
+								creator: "5e95828512adf234220e6200",
+							}),
+						}
+					);
+					const responseData = await response.json();
+					//console.log(responseData);
+				} catch (err) {
+					console.log(err);
+				}
+				props.navigation.navigate("Status");
+				setClick(false);
+			}
 		}
+		fetchData();
 	}, [formData]);
 
 	const [formState, dispatch] = useReducer(formReducer, {
 		inputs: {
 			roomNumber: {
 				value: "",
-				isValid: false
+				isValid: false,
 			},
 			date: {
 				value: "",
-				isValid: false
+				isValid: false,
 			},
 			timeLeave: {
 				value: "",
-				isValid: false
+				isValid: false,
 			},
 			timeEntry: {
 				value: "",
-				isValid: false
+				isValid: false,
 			},
 			societyName: {
 				value: "",
-				isValid: false
-			}
+				isValid: false,
+			},
 		},
-		isValid: false
+		isValid: false,
 	});
 
 	//it will be triggered when value of id, value, isValid as the onInput function in the input.js component
@@ -129,7 +156,7 @@ const Society = props => {
 			type: "INPUT_CHANGE",
 			value: value,
 			isValid: isValid,
-			inputId: id
+			inputId: id,
 		});
 	}, []);
 	const upload = () => {};
@@ -224,18 +251,18 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		backgroundColor: "rgba(18,18,18,1)",
 		width: "100%",
-		height: "100%"
+		height: "100%",
 	},
 	buttonHome: {
 		marginBottom: 20,
-		marginTop: "10%"
+		marginTop: "10%",
 	},
 	editText: {
-		color: "white"
+		color: "white",
 	},
 	timeText: {
 		flex: 1,
-		flexDirection: "row"
+		flexDirection: "row",
 	},
 
 	textHome: {
@@ -244,8 +271,8 @@ const styles = StyleSheet.create({
 		fontWeight: "bold",
 		fontSize: 28,
 		marginBottom: 10,
-		marginTop: "10%"
-	}
+		marginTop: "10%",
+	},
 });
 
 export default Society;

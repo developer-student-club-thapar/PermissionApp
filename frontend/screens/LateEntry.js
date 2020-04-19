@@ -11,7 +11,7 @@ import Time from "../components/ui/Time";
 
 //wait function to return back a promise after refreshing the screen on pulling down
 function wait(timeout) {
-	return new Promise(resolve => {
+	return new Promise((resolve) => {
 		setTimeout(resolve, timeout);
 	});
 }
@@ -32,9 +32,9 @@ const formReducer = (state, action) => {
 				...state,
 				inputs: {
 					...state.inputs,
-					[action.inputId]: { value: action.value, isValid: action.isValid }
+					[action.inputId]: { value: action.value, isValid: action.isValid },
 				},
-				isValid: formIsValid
+				isValid: formIsValid,
 			};
 
 		default:
@@ -43,7 +43,7 @@ const formReducer = (state, action) => {
 };
 
 //This is the main function consisting of all the functionality of Late entry screen.
-const LateEntry = props => {
+const LateEntry = (props) => {
 	//For refreshing the screen on pulling down
 	const [refreshing, setRefreshing] = React.useState(false);
 	const onRefresh = React.useCallback(() => {
@@ -57,7 +57,7 @@ const LateEntry = props => {
 	const [clicked, setClick] = useState(false);
 
 	// function for the submit button
-	const onClickHandler = index => {
+	const onClickHandler = (index) => {
 		setClick(true);
 	};
 
@@ -69,7 +69,7 @@ const LateEntry = props => {
 				RoomNumber: formState.inputs.roomNumber.value,
 				Date: formState.inputs.date.value,
 				Time: formState.inputs.time.value,
-				Place: formState.inputs.location.value
+				Place: formState.inputs.location.value,
 			});
 		}
 		if (clicked) {
@@ -79,33 +79,59 @@ const LateEntry = props => {
 
 	//to reset navigate to status page whenever form data changes and clicked is true.
 	useEffect(() => {
-		if (clicked) {
-			console.log(formData);
-			props.navigation.navigate("Status");
-			setClick(false);
+		async function fetchData() {
+			if (clicked) {
+				//console.log(formData);
+				try {
+					const response = await fetch(
+						"http://192.168.43.33:5000/api/permi/lateentry/",
+						{
+							method: "POST",
+							headers: {
+								Accept: "application/json",
+								"Content-Type": "application/json",
+							},
+							body: JSON.stringify({
+								room_num: formState.inputs.roomNumber.value,
+								destination: formState.inputs.location.value,
+								date: formState.inputs.date.value,
+								intime: formState.inputs.time.value,
+								creator: "5e95828512adf234220e6200",
+							}),
+						}
+					);
+					const responseData = await response.json();
+					//console.log(responseData);
+				} catch (err) {
+					console.log(err);
+				}
+				props.navigation.navigate("Status");
+				setClick(false);
+			}
 		}
+		fetchData();
 	}, [formData]);
 
 	const [formState, dispatch] = useReducer(formReducer, {
 		inputs: {
 			roomNumber: {
 				value: "",
-				isValid: false
+				isValid: false,
 			},
 			location: {
 				value: "",
-				isValid: false
+				isValid: false,
 			},
 			date: {
 				value: "",
-				isValid: false
+				isValid: false,
 			},
 			time: {
 				value: "",
-				isValid: false
-			}
+				isValid: false,
+			},
 		},
-		isValid: false
+		isValid: false,
 	});
 
 	//it will be triggered when value of id, value, isValid as the onInput function in the input.js component
@@ -114,7 +140,7 @@ const LateEntry = props => {
 			type: "INPUT_CHANGE",
 			value: value,
 			isValid: isValid,
-			inputId: id
+			inputId: id,
 		});
 	}, []);
 
@@ -193,18 +219,18 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		backgroundColor: "rgba(18,18,18,1)",
 		width: "100%",
-		height: "100%"
+		height: "100%",
 	},
 	buttonHome: {
 		marginBottom: 20,
-		marginTop: "10%"
+		marginTop: "10%",
 	},
 	editText: {
-		color: "white"
+		color: "white",
 	},
 	timeText: {
 		flex: 1,
-		flexDirection: "row"
+		flexDirection: "row",
 	},
 
 	textHome: {
@@ -213,8 +239,8 @@ const styles = StyleSheet.create({
 		fontWeight: "bold",
 		fontSize: 28,
 		marginBottom: 10,
-		marginTop: "10%"
-	}
+		marginTop: "10%",
+	},
 });
 
 export default LateEntry;

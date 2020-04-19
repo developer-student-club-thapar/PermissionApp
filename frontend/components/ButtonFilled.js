@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 import { StyleSheet, TouchableOpacity, Text } from "react-native";
 
-const Index = props => {
+const Index = (props) => {
 	return (
 		<TouchableOpacity
 			onPress={() => props.onClick(props.index)}
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 		shadowColor: "rgba(0,0,0,1)",
 		shadowOpacity: 0.87,
 		overflow: "visible",
-		width: 300
+		width: 300,
 	},
 	text2: {
 		color: "rgba(253,253,253,1)",
@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		margin: "auto",
 		padding: 15,
-		fontSize: 18
-	}
+		fontSize: 18,
+	},
 });
 
 export default Index;

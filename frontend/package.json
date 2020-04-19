@@ -23,6 +23,7 @@
 		"react-native-elements": "^1.2.7",
 		"react-native-gesture-handler": "^1.6.1",
 		"react-native-linear-gradient": "^2.5.6",
+		"react-native-loading-spinner-overlay": "^1.1.0",
 		"react-native-modal-datetime-picker": "^8.5.1",
 		"react-native-reanimated": "^1.7.0",
 		"react-native-screens": "^2.4.0",
