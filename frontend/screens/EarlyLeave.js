@@ -76,7 +76,7 @@ const EarlyLeave = props => {
 		function func() {
 			setFormData({
 				Category: "Late Entry",
-				room_num: formState.inputs.room_num.value,
+				RoomNumber: formState.inputs.roomNumber.value,
 				Date: formState.inputs.date.value,
 				Time: formState.inputs.time.value,
 				Place: formState.inputs.location.value
@@ -90,15 +90,7 @@ const EarlyLeave = props => {
 	//to reset navigate to status page whenever form data changes and clicked is true.
 	useEffect(() => {
 		if (clicked) {
-			sendRequest('http://localhost:5000/api/permi/early','POST',JSON.stringify({
-				room_num: formState.inputs.room_num.value,
-				destination: formState.inputs.destination.value,
-				outtime: formState.inputs.outtime.value,
-				date: formState.inputs.date.value
-				//to be added creator,userid-hooks
-			}),
-			{ 'Content-Type': 'application/json'}
-			);
+			console.log(formData);
 			props.navigation.navigate("Status");
 			setClick(false);
 		}
@@ -106,7 +98,7 @@ const EarlyLeave = props => {
 
 	const [formState, dispatch] = useReducer(formReducer, {
 		inputs: {
-			room_num: {
+			roomNumber: {
 				value: "",
 				isValid: false
 			},
@@ -157,7 +149,7 @@ const EarlyLeave = props => {
 						errorText='Please enter your room no.'
 						onInput={inputHandler}
 						afterSubmit={formData}
-						id='room_num'
+						id='roomNumber'
 					/>
 					<Date
 						iconName='calendar'

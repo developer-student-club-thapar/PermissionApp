@@ -19,7 +19,7 @@ const signup = async (req, res, next) => {
   if (!errors.isEmpty()) {
     return next(new HttpError('Invalid inputs passed, please check your data.', 422));
   }
-  const { Name, Email_id, Roll_No, room_num, Password} = req.body;
+  const { Name, Email_id, Roll_No, Room_No, Password} = req.body;
   let existingUser;
   try{
      existingUser=await Users.findOne({Email_id:Email_id});
@@ -35,7 +35,7 @@ const signup = async (req, res, next) => {
     Name, // name: name
     Email_id,
     Roll_No,
-    room_num,
+    Room_No,
     Password,
     Permis :[]
   });
