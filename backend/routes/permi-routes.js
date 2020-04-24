@@ -2,7 +2,7 @@ const express = require("express");
 const { check } = require("express-validator");
 
 const permiControllers = require("../controllers/permi-controllers");
-
+const checkAuth = require('../middleware/check-auth');
 const router = express.Router();
 
 //get all permis regarding any type(for caretaker)
@@ -18,6 +18,8 @@ router.get("/all", permiControllers.getAllPermiForCaretaker);
 
 //to get all permi requests made by a particlar user
 router.get("/user/:uid", permiControllers.getPermisByUserId);
+
+router.use(checkAuth);
 
 // create early leave request
 router.post(
