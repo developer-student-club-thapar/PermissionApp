@@ -13,6 +13,8 @@ import EarlyLeave from "../../screens/EarlyLeave";
 import LateEntry from "../../screens/LateEntry";
 import Caretaker from "../../screens/Caretaker";
 import Warden from "../../screens/Warden";
+import PreviousWarden from "../../screens/PreviousWarden";
+import Logout from "../../screens/Logout";
 
 //main function to create a navigation drawer
 const Navigation = createDrawerNavigator(
@@ -20,58 +22,60 @@ const Navigation = createDrawerNavigator(
 		LogIn: {
 			screen: LogIn,
 			navigationOptions: {
-				drawerLabel: <Hidden />
-			}
+				drawerLabel: <Hidden />,
+			},
 		},
 		Home: {
-			screen: Home
+			screen: Home,
 		},
 		Status: {
-			screen: Status
-		},
-		Logout: {
-			screen: LogIn
+			screen: Status,
 		},
 		Society: {
 			screen: Society,
 			navigationOptions: {
-				drawerLabel: <Hidden />
-			}
+				drawerLabel: <Hidden />,
+			},
 		},
+
 		Library: {
 			screen: Library,
 			navigationOptions: {
-				drawerLabel: <Hidden />
-			}
+				drawerLabel: <Hidden />,
+			},
 		},
 		LateEntry: {
 			screen: LateEntry,
 			navigationOptions: {
-				drawerLabel: <Hidden />
-			}
+				drawerLabel: <Hidden />,
+			},
 		},
 		EarlyLeave: {
 			screen: EarlyLeave,
 			navigationOptions: {
-				drawerLabel: <Hidden />
-			}
+				drawerLabel: <Hidden />,
+			},
 		},
+
 		Caretaker: {
 			screen: Caretaker,
 			navigationOptions: {
-				drawerLabel: <Hidden />
-			}
+				drawerLabel: <Hidden />,
+			},
 		},
 		Warden: {
 			screen: Warden,
 			navigationOptions: {
-				drawerLabel: <Hidden />
-			}
-		}
+				drawerLabel: <Hidden />,
+			},
+		},
+		PreviousWarden: {
+			screen: PreviousWarden,
+		},
 	},
 	{
 		//To customise the side Drawer
-		contentComponent: drawerContentComponents
+		contentComponent: drawerContentComponents,
 	}
 );
 

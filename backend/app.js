@@ -11,14 +11,14 @@ const app = express();
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-  );
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
+	res.setHeader("Access-Control-Allow-Origin", "*");
+	res.setHeader(
+		"Access-Control-Allow-Headers",
+		"Origin, X-Requested-With, Content-Type, Accept, Authorization"
+	);
+	res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
 
-  next();
+	next();
 });
 
 app.use("/api/permi", permiRoutes);
@@ -39,7 +39,7 @@ app.use((error, req, res, next) => {
 
 mongoose
 	.connect(
-		"mongodb+srv://Snigdha:fc6Xg9DJ7uPztXxp@permissionapp-nn3fo.mongodb.net/permi?retryWrites=true&w=majority",
+		"mongodb+srv://Snigdha:6S1KHLgkkanP0iv1@permissionapp-nn3fo.mongodb.net/permi?retryWrites=true&w=majority",
 		{ useNewUrlParser: true }
 	)
 	.then(() => app.listen(5000))

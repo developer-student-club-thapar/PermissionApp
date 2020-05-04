@@ -1,5 +1,11 @@
 // Home page is the select category page of our app.
-import React, { useState, useEffect, useReducer, useCallback } from "react";
+import React, {
+	useState,
+	useEffect,
+	useReducer,
+	useCallback,
+	useContext,
+} from "react";
 import {
 	StyleSheet,
 	View,
@@ -18,6 +24,7 @@ import Input from "../components/ui/Input";
 import { VALIDATOR_REQUIRE } from "../components/Validator";
 import Date from "../components/ui/Date";
 import Time from "../components/ui/Time";
+import { AuthContext } from "../components/context/auth-context";
 
 //wait function to return back a promise after refreshing the screen on pulling down
 function wait(timeout) {
@@ -54,6 +61,7 @@ const formReducer = (state, action) => {
 
 //This is the main function consisting of all the functionality of Society screen.
 const Society = (props) => {
+	const auth = useContext(AuthContext);
 	//For refreshing the screen on pulling down
 	const [refreshing, setRefreshing] = React.useState(false);
 	const onRefresh = React.useCallback(() => {
@@ -101,6 +109,7 @@ const Society = (props) => {
 							headers: {
 								Accept: "application/json",
 								"Content-Type": "application/json",
+								Authorization: "Bearer " + auth.token,
 							},
 							body: JSON.stringify({
 								room_num: formState.inputs.roomNumber.value,
@@ -108,7 +117,7 @@ const Society = (props) => {
 								date: formState.inputs.date.value,
 								intime: formState.inputs.timeEntry.value,
 								society_name: formState.inputs.societyName.value,
-								creator: "5e95828512adf234220e6200",
+								creator: auth.userId,
 							}),
 						}
 					);
@@ -221,11 +230,11 @@ const Society = (props) => {
 						id='societyName'
 					/>
 
-					<ButtonFilled
+					{/* <ButtonFilled
 						buttonText='Upload Document'
 						onClick={upload}
 						color='rgba(107,8,127,1)'
-					/>
+					/> */}
 
 					<View style={styles.buttonHome}>
 						<Button

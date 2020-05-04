@@ -245,6 +245,58 @@ const getAllPermiForCaretaker = async (req, res, next) => {
 	});
 };
 
+//Previous accepetd requests by warden/caretaker.
+const getAcceptedPermiForCaretaker = async (req, res, next) => {
+	let permis;
+	try {
+		permis = await Librarypermi.find({ status: "accepted" });
+	} catch (err) {
+		const error = new HttpError(
+			"Fetching all library permis failed, please try again later.",
+			500
+		);
+		return next(error);
+	}
+	let permissoc;
+	try {
+		permissoc = await Societypermi.find({ status: "accepted" });
+	} catch (err) {
+		const error = new HttpError(
+			"Fetching all society permis failed, please try again later.",
+			500
+		);
+		return next(error);
+	}
+	let permisear;
+	try {
+		permisear = await EarlyLeavepermi.find({ status: "accepted" });
+	} catch (err) {
+		const error = new HttpError(
+			"Fetching all library permis failed, please try again later.",
+			500
+		);
+		return next(error);
+	}
+	let permislate;
+	try {
+		permislate = await LateEntrypermi.find({ status: "accepted" });
+	} catch (err) {
+		const error = new HttpError(
+			"Fetching all library permis failed, please try again later.",
+			500
+		);
+		return next(error);
+	}
+
+	permis = permis.concat(permissoc).concat(permisear).concat(permislate);
+	permis.sort((a, b) => (a._id > b._id ? 1 : -1));
+	res.json({
+		All_permis_by_user: permis.map((permi) =>
+			permi.toObject({ getters: true })
+		),
+	});
+};
+
 //creation of permis early leave
 const createPermiEarlyLeave = async (req, res, next) => {
 	const errors = validationResult(req);
@@ -700,6 +752,7 @@ exports.getAllLateEntryPermi = getAllLateEntryPermi;
 exports.getAllPermi = getAllPermi;
 exports.getPermisByUserId = getPermisByUserId;
 exports.getAllPermiForCaretaker = getAllPermiForCaretaker;
+exports.getAcceptedPermiForCaretaker = getAcceptedPermiForCaretaker;
 
 exports.createPermiEarlyLeave = createPermiEarlyLeave;
 exports.createPermiSociety = createPermiSociety;

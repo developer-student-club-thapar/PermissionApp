@@ -1,6 +1,6 @@
 // Permission status page of the app.
 
-import React, { Component, useEffect, useState } from "react";
+import React, { Component, useEffect, useState, useContext } from "react";
 import {
 	View,
 	Text,
@@ -14,6 +14,7 @@ import ScrollViewEntry from "../components/ScrollViewEntry";
 import { ScrollView } from "react-native-gesture-handler";
 import Spinner from "react-native-loading-spinner-overlay";
 import { NavigationEvents } from "react-navigation";
+import { AuthContext } from "../components/context/auth-context";
 
 function wait(timeout) {
 	return new Promise((resolve) => {
@@ -21,6 +22,7 @@ function wait(timeout) {
 	});
 }
 const Status = (props) => {
+	const auth = useContext(AuthContext);
 	const [isloading, setIsLoading] = useState(false);
 	const [error, setError] = useState();
 	const [loadedPermis, setLoadedPermis] = useState();
@@ -33,7 +35,13 @@ const Status = (props) => {
 			setIsLoading(true);
 			setSpinner(true);
 			const response = await fetch(
-				"http://192.168.43.33:5000/api/permi/user/5e95828512adf234220e6200"
+				`http://192.168.43.33:5000/api/permi/user/${auth.userId}`,
+
+				{
+					headers: {
+						Authorization: "Bearer " + auth.token,
+					},
+				}
 			);
 			const responseData = await response.json();
 			if (!response.ok) {
@@ -55,8 +63,14 @@ const Status = (props) => {
 			try {
 				setIsLoading(true);
 				setSpinner(true);
+
 				const response = await fetch(
-					"http://192.168.43.33:5000/api/permi/user/5e95828512adf234220e6200"
+					`http://192.168.43.33:5000/api/permi/user/${auth.userId}`,
+					{
+						headers: {
+							Authorization: "Bearer " + auth.token,
+						},
+					}
 				);
 				const responseData = await response.json();
 				if (!response.ok) {

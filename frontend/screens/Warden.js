@@ -1,11 +1,12 @@
 // Warden screen of the app.
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, Text, StyleSheet, Image, RefreshControl } from "react-native";
 import AppHeader from "../components/navigation/Header";
 import Spinner from "react-native-loading-spinner-overlay";
 import { ScrollView } from "react-native-gesture-handler";
 import Post from "../components/Post";
+import { AuthContext } from "../components/context/auth-context";
 
 function wait(timeout) {
 	return new Promise((resolve) => {
@@ -13,6 +14,7 @@ function wait(timeout) {
 	});
 }
 const Warden = (props) => {
+	const auth = useContext(AuthContext);
 	const [isloading, setIsLoading] = useState(false);
 	const [error, setError] = useState();
 	const [loadedPermis, setLoadedPermis] = useState();

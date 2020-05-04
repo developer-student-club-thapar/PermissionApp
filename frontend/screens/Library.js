@@ -1,5 +1,11 @@
 // Library permission page of the app.
-import React, { useState, useEffect, useReducer, useCallback } from "react";
+import React, {
+	useState,
+	useEffect,
+	useReducer,
+	useCallback,
+	useContext,
+} from "react";
 import { StyleSheet, View, Text, RefreshControl } from "react-native";
 import AppHeader from "../components/navigation/Header";
 import { ScrollView } from "react-native-gesture-handler";
@@ -8,6 +14,7 @@ import Input from "../components/ui/Input";
 import { VALIDATOR_REQUIRE } from "../components/Validator";
 import Date from "../components/ui/Date";
 import Time from "../components/ui/Time";
+import { AuthContext } from "../components/context/auth-context";
 
 //wait function to return back a promise after refreshing the screen on pulling down
 function wait(timeout) {
@@ -44,6 +51,7 @@ const formReducer = (state, action) => {
 
 //This is the main function consisting of all the functionality of Library screen.
 const Library = (props) => {
+	const auth = useContext(AuthContext);
 	const [refreshing, setRefreshing] = React.useState(false);
 	const onRefresh = React.useCallback(() => {
 		setRefreshing(true);
@@ -89,13 +97,14 @@ const Library = (props) => {
 							headers: {
 								Accept: "application/json",
 								"Content-Type": "application/json",
+								Authorization: "Bearer " + auth.token,
 							},
 							body: JSON.stringify({
 								room_num: formState.inputs.roomNumber.value,
 								outtime: formState.inputs.timeLeave.value,
 								date: formState.inputs.date.value,
 								intime: formState.inputs.timeEntry.value,
-								creator: "5e95828512adf234220e6200",
+								creator: auth.userId,
 							}),
 						}
 					);
