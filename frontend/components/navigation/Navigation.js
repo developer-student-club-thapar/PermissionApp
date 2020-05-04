@@ -14,7 +14,6 @@ import LateEntry from "../../screens/LateEntry";
 import Caretaker from "../../screens/Caretaker";
 import Warden from "../../screens/Warden";
 import PreviousWarden from "../../screens/PreviousWarden";
-import Logout from "../../screens/Logout";
 
 //main function to create a navigation drawer
 const Navigation = createDrawerNavigator(
