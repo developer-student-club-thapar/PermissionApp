@@ -6,7 +6,7 @@ import {
 	Text,
 	TextInput,
 	Image,
-	RefreshControl
+	RefreshControl,
 } from "react-native";
 import EvilIconsIcon from "react-native-vector-icons/EvilIcons";
 import { validate } from "../Validator";
@@ -17,12 +17,12 @@ const inputReducer = (state, action) => {
 			return {
 				...state,
 				value: action.val,
-				isValid: validate(action.val, action.validators)
+				isValid: validate(action.val, action.validators),
 			};
 		case "TOUCH": {
 			return {
 				...state,
-				isTouched: true
+				isTouched: true,
 			};
 		}
 		case "INITIAL": {
@@ -30,7 +30,7 @@ const inputReducer = (state, action) => {
 				...state,
 				value: action.val,
 				isValid: false,
-				isTouched: false
+				isTouched: false,
 			};
 		}
 		default:
@@ -38,28 +38,28 @@ const inputReducer = (state, action) => {
 	}
 };
 
-const Input = props => {
+const Input = (props) => {
 	const [inputState, dispatch] = useReducer(inputReducer, {
 		value: "",
 		isTouched: false,
-		isValid: false
+		isValid: false,
 	});
 
 	// useEffect(() => {
 	// 	onInput(id, value, isValid);
 	// }, [id, value, isValid, onInput]);
 
-	const changeHandler = event => {
+	const changeHandler = (event) => {
 		dispatch({
 			type: "CHANGE",
 			val: event,
-			validators: props.validators
+			validators: props.validators,
 		});
 	};
 
 	const touchHandler = () => {
 		dispatch({
-			type: "TOUCH"
+			type: "TOUCH",
 		});
 	};
 	const { id, onInput, afterSubmit } = props;
@@ -68,7 +68,7 @@ const Input = props => {
 	useEffect(() => {
 		dispatch({
 			type: "INITIAL",
-			val: ""
+			val: "",
 		});
 	}, [afterSubmit]);
 
@@ -81,7 +81,7 @@ const Input = props => {
 			<View
 				style={[
 					styles.rect9,
-					!inputState.isValid && inputState.isTouched && styles.inValidClass
+					!inputState.isValid && inputState.isTouched && styles.inValidClass,
 				]}
 			>
 				<EvilIconsIcon
@@ -91,7 +91,7 @@ const Input = props => {
 				<TextInput
 					placeholder={props.placeholder}
 					placeholderTextColor='rgba(255,255,255,1)'
-					secureTextEntry={false}
+					secureTextEntry={props.secureTextEntry}
 					style={styles.usernameInput}
 					value={inputState.value}
 					onChangeText={changeHandler}
@@ -112,27 +112,27 @@ const styles = StyleSheet.create({
 		padding: 10,
 		borderRadius: 5,
 		flexDirection: "row",
-		width: "100%"
+		width: "100%",
 	},
 	inValidClass: {
 		borderColor: "red",
-		borderBottomWidth: 3
+		borderBottomWidth: 3,
 	},
 	invalidText: {
-		color: "red"
+		color: "red",
 	},
 	col9: {
 		flexDirection: "column",
-		marginBottom: "5%"
+		marginBottom: "5%",
 	},
 	iconUser: {
 		color: "rgba(255,255,255,1)",
 		fontSize: 30,
 		marginLeft: 20,
-		alignSelf: "center"
+		alignSelf: "center",
 	},
 	usernameInput: {
-		color: "rgba(255,255,255,1)"
-	}
+		color: "rgba(255,255,255,1)",
+	},
 });
 export default Input;

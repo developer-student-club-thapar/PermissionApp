@@ -262,6 +262,7 @@ const LogIn = (props) => {
 				<Input
 					iconName='lock'
 					placeholder='Password'
+					secureTextEntry={true}
 					validators={[VALIDATOR_REQUIRE()]}
 					errorText='Required!'
 					onInput={inputHandler}

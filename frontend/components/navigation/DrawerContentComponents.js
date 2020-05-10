@@ -48,6 +48,9 @@ const DrawerContentComponent = (props) => {
 								{props.getLabel(scene) == "PreviousWarden" && (
 									<Text style={styles.buttonText}>Previous Requests</Text>
 								)}
+								{props.getLabel(scene) == "Warden" && (
+									<Text style={styles.buttonText}>Unattended Requests</Text>
+								)}
 							</View>
 						)}
 					/>
