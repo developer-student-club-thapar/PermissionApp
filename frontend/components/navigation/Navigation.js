@@ -64,9 +64,6 @@ const Navigation = createDrawerNavigator(
 		},
 		Warden: {
 			screen: Warden,
-			navigationOptions: {
-				drawerLabel: <Hidden />,
-			},
 		},
 		PreviousWarden: {
 			screen: PreviousWarden,
