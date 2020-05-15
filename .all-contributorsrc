@@ -14,6 +14,34 @@
         "test",
         "code",
         "maintenance"
+     ]
+    },
+    {
+      "login": "Snigdhabhatnagar",
+      "name": "Snigdhabhatnagar",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/35984472?v=4",
+      "profile": "https://www.linkedin.com/in/snigdha-bhatnagar-4ba860159/",
+      "contributions": [
+        "infra",
+        "code"
+      ]
+    },
+    {
+      "login": "SabhyaGrover",
+      "name": "Sabhya Grover",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/43875565?v=4",
+      "profile": "https://github.com/SabhyaGrover",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "payaljindal",
+      "name": "payaljindal",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/44068500?v=4",
+      "profile": "https://github.com/payaljindal",
+      "contributions": [
+        "code"
       ]
     }
   ],
