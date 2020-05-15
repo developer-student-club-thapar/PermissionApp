@@ -1,12 +1,13 @@
 
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
+
 # **Girls' Permission App**
 
 [![Build Status](https://img.shields.io/travis/npm/npm/latest.svg?style=flat-square)](https://travis-ci.org/npm/npm) [![npm](https://img.shields.io/npm/v/npm.svg?style=flat-square)](https://www.npmjs.com/package/npm) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/your/your-project/blob/master/LICENSE) [![Slack Status](https://img.shields.io/badge/slack-chat-purple.svg?logo=slack)](https://dscthapar-gspatiala.slack.com/join/shared_invite/enQtNzU2MzA2MjcxNzkyLTkwNDRiNWMzYjUzYjNjYjM0M2JhMDgwOTI3MGQwYWU1NzNlNGMxZGVhNzk0MGZiYTI5YzgwZDhiMTk1MjE4M2M) [![GitHub issues](https://img.shields.io/github/issues/developer-student-club-thapar/officialWebsite?logo=github)](https://github.com/developer-student-club-thapar/PermissionApp/issues)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 ![GitHub repo size](https://img.shields.io/github/repo-size/developer-student-club-thapar/officialWebsite)
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 <a> <img src="https://badgen.net/dependabot/thepracticaldev/dev.to?icon=dependabot" alt="Dependabot Badge"></a>
 
 ## **Layout**
@@ -54,6 +55,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- markdownlint-disable -->
 <table>
   <tr>
+    <td align="center"><a href="http://shreyagupta30.github.io"><img src="https://avatars1.githubusercontent.com/u/33135343?v=4" width="100px;" alt=""/><br /><sub><b>Shreya Gupta</b></sub></a><br /><a href="https://github.com/developer-student-club-thapar/PermissionApp/commits?author=shreyagupta30" title="Tests">⚠️</a> <a href="https://github.com/developer-student-club-thapar/PermissionApp/commits?author=shreyagupta30" title="Code">💻</a> <a href="#maintenance-shreyagupta30" title="Maintenance">🚧</a></td>
     <td align="center"><a href="https://www.linkedin.com/in/snigdha-bhatnagar-4ba860159/"><img src="https://avatars1.githubusercontent.com/u/35984472?v=4" width="100px;" alt=""/><br /><sub><b>Snigdhabhatnagar</b></sub></a><br /><a href="#infra-Snigdhabhatnagar" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="https://github.com/developer-student-club-thapar/PermissionApp/commits?author=Snigdhabhatnagar" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/SabhyaGrover"><img src="https://avatars1.githubusercontent.com/u/43875565?v=4" width="100px;" alt=""/><br /><sub><b>Sabhya Grover</b></sub></a><br /><a href="https://github.com/developer-student-club-thapar/PermissionApp/commits?author=SabhyaGrover" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/payaljindal"><img src="https://avatars1.githubusercontent.com/u/44068500?v=4" width="100px;" alt=""/><br /><sub><b>payaljindal</b></sub></a><br /><a href="https://github.com/developer-student-club-thapar/PermissionApp/commits?author=payaljindal" title="Code">💻</a></td>
