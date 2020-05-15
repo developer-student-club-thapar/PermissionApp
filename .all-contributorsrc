@@ -1,0 +1,25 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "samii9914",
+      "name": "Samiksha Kapoor",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/36279135?v=4",
+      "profile": "https://samii9914.github.io/#",
+      "contributions": [
+        "infra",
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "PermissionApp",
+  "projectOwner": "developer-student-club-thapar",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
