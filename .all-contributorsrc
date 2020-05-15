@@ -1,0 +1,25 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "Snigdhabhatnagar",
+      "name": "Snigdhabhatnagar",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/35984472?v=4",
+      "profile": "https://www.linkedin.com/in/snigdha-bhatnagar-4ba860159/",
+      "contributions": [
+        "infra",
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "PermissionApp",
+  "projectOwner": "developer-student-club-thapar",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
