@@ -54,7 +54,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="http://shreyagupta30.github.io"><img src="https://avatars1.githubusercontent.com/u/33135343?v=4" width="100px;" alt=""/><br /><sub><b>Shreya Gupta</b></sub></a><br /><a href="https://github.com/developer-student-club-thapar/PermissionApp/commits?author=shreyagupta30" title="Tests">⚠️</a> <a href="https://github.com/developer-student-club-thapar/PermissionApp/commits?author=shreyagupta30" title="Code">💻</a></td>
+    <td align="center"><a href="http://shreyagupta30.github.io"><img src="https://avatars1.githubusercontent.com/u/33135343?v=4" width="100px;" alt=""/><br /><sub><b>Shreya Gupta</b></sub></a><br /><a href="https://github.com/developer-student-club-thapar/PermissionApp/commits?author=shreyagupta30" title="Tests">⚠️</a> <a href="https://github.com/developer-student-club-thapar/PermissionApp/commits?author=shreyagupta30" title="Code">💻</a> <a href="#maintenance-shreyagupta30" title="Maintenance">🚧</a></td>
   </tr>
 </table>
 
