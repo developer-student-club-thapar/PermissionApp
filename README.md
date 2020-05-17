@@ -2,8 +2,10 @@
 
 # **Girls' Permission App**
 
-[![npm](https://img.shields.io/npm/v/npm.svg?style=flat-square)](https://www.npmjs.com/package/npm) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) [![License](https://img.shields.io/github/license/developer-student-club-thapar/PermissionApp)](https://github.com/developer-student-club-thapar/PermissionApp/blob/master/LICENSE) [![Slack Status](https://img.shields.io/badge/slack-chat-purple.svg?logo=slack)](https://dscthapar-gspatiala.slack.com/join/shared_invite/enQtNzU2MzA2MjcxNzkyLTkwNDRiNWMzYjUzYjNjYjM0M2JhMDgwOTI3MGQwYWU1NzNlNGMxZGVhNzk0MGZiYTI5YzgwZDhiMTk1MjE4M2M) [![GitHub issues](https://img.shields.io/github/issues/developer-student-club-thapar/PermissionApp?logo=github)](https://github.com/developer-student-club-thapar/PermissionApp/issues)
-![GitHub repo size](https://img.shields.io/github/repo-size/developer-student-club-thapar/officialWebsite)
+[![npm](https://img.shields.io/npm/v/npm.svg?style=flat-square)](https://www.npmjs.com/package/npm) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) [![License](https://img.shields.io/github/license/developer-student-club-thapar/PermissionApp)](https://github.com/developer-student-club-thapar/PermissionApp/blob/master/LICENSE) [![Slack Status](https://img.shields.io/badge/slack-chat-purple.svg?logo=slack)](https://dscthapar-gspatiala.slack.com/join/shared_invite/enQtNzU2MzA2MjcxNzkyLTkwNDRiNWMzYjUzYjNjYjM0M2JhMDgwOTI3MGQwYWU1NzNlNGMxZGVhNzk0MGZiYTI5YzgwZDhiMTk1MjE4M2M) 
+
+[![GitHub issues](https://img.shields.io/github/issues/developer-student-club-thapar/PermissionApp?logo=github)](https://github.com/developer-student-club-thapar/PermissionApp/issues)
+![GitHub repo size](https://img.shields.io/github/repo-size/developer-student-club-thapar/PermissionApp)
 <a> <img src="https://badgen.net/dependabot/thepracticaldev/dev.to?icon=dependabot" alt="Dependabot Badge"></a>
 
 </div>
