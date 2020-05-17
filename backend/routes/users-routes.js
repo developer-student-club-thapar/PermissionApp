@@ -23,4 +23,12 @@ router.post(
 
 router.post('/login', usersController.login);
 
+// route to change Password
+router.patch(
+  "/changepassword/:uid",
+  [check("prevPassword").not().isEmpty(),
+   check("newPassword").not().isEmpty()],
+  usersController.changepassword
+);
+
 module.exports = router;

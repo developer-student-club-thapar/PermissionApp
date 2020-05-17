@@ -40,7 +40,7 @@ app.use((error, req, res, next) => {
 mongoose
 	.connect(
 		"mongodb+srv://Snigdha:6S1KHLgkkanP0iv1@permissionapp-nn3fo.mongodb.net/permi?retryWrites=true&w=majority",
-		{ useNewUrlParser: true }
+		{useUnifiedTopology: true, useNewUrlParser: true }
 	)
 	.then(() => app.listen(5000))
 	.catch((err) => console.log(err));

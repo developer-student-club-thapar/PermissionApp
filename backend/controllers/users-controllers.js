@@ -164,6 +164,69 @@ const login = async (req, res, next) => {
 	});
 };
 
+const changepassword = async (req, res, next) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return next(
+			new HttpError("Invalid inputs passed, please check your data.", 422)
+		);
+	}
+
+	const { prevPassword, newPassword } = req.body;
+	const userid = req.params.uid;
+	let id;
+	try {
+		id = await Users.findById(userid);
+	} catch (err) {
+		return next(new HttpError("Could Not find user.Please Try Again", 422));
+	}
+
+
+
+	let isValidPassword = false;
+	try {
+		isValidPassword = await bcrypt.compare(prevPassword, id.Password);
+	} catch (err) {
+		const error = new HttpError(
+			"Could not change password, please check your credentials and try again.",
+			500
+		);
+		return next(error);
+	}
+
+	if (!isValidPassword) {
+		const error = new HttpError(
+			"Invalid credentials, could not update status.",
+			401
+		);
+		return next(error);
+	}
+
+	let newhashPassword;
+	try {
+		newhashPassword = await bcrypt.hash(newPassword, 12);
+	} catch (err) {
+		const error = new HttpError(
+			"Could not create user, please try again.",
+			500
+		);
+		return next(error);
+	}
+	id.Password = newhashPassword;
+	try {
+		await id.save();
+	} catch (err) {
+		return next(new HttpError("Could Not Update Password. Please Try Again.", 422));
+	}
+
+	
+
+	res.json({
+		"message" : "Password updated"
+	});
+};
+
 exports.getUsers = getUsers;
 exports.signup = signup;
 exports.login = login;
+exports.changepassword = changepassword;
