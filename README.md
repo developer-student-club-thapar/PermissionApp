@@ -28,8 +28,7 @@ This folder contains the code for the backend side of the application  i.e posti
 - Make sure that before you create a new branch for new changes,[syncing with upstream](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/syncing-a-fork) is neccesary. is neccesary.
 
 ## How to run the project locally?
-1. Clone the repository
-``` git clone ```
+
 1. Open frontend folder.
 2. run ``` npm install ```
 3. run ``` npm start ```
