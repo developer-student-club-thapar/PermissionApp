@@ -10,25 +10,20 @@ router.get('/', usersController.getUsers);
 router.post(
   '/signup',
   [
-    check('Name')
-      .not()
-      .isEmpty(),
-    check('Email_id')
-      .normalizeEmail()
-      .isEmail(),
-    check('Password').isLength({ min: 6 })
+    check('Name').not().isEmpty(),
+    check('Email_id').normalizeEmail().isEmail(),
+    check('Password').isLength({ min: 6 }),
   ],
-  usersController.signup
+  usersController.signup,
 );
 
 router.post('/login', usersController.login);
 
 // route to change Password
 router.patch(
-  "/changepassword/:uid",
-  [check("prevPassword").not().isEmpty(),
-   check("newPassword").not().isEmpty()],
-  usersController.changepassword
+  '/changepassword/:uid',
+  [check('prevPassword').not().isEmpty(), check('newPassword').not().isEmpty()],
+  usersController.changepassword,
 );
 
 module.exports = router;

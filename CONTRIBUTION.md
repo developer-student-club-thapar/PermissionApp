@@ -1,6 +1,6 @@
 # Welcome to the contributions of Girl's Permission App for TIET, Patiala
 
-### We follow a systematic Git Workflow -
+## We follow a systematic Git Workflow -
 
 - Create a fork of this repo.
 - Clone your fork of your repo on your pc.
