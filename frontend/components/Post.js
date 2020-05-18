@@ -1,12 +1,14 @@
 //Component has been used in Caretaker and warden screen to show the permission requests. This is the layout of each request.
 
-import React, { Component } from 'react';
+import React, { Component, useContext } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import EvilIconsIcon from 'react-native-vector-icons/EvilIcons';
 import ViewMoreText from 'react-native-view-more-text';
+import { AuthContext } from './context/auth-context';
 
 const Post = (props) => {
+  const auth = useContext(AuthContext);
   //To show the full request box
   const renderViewMore = (onPress) => {
     return (
@@ -37,6 +39,7 @@ const Post = (props) => {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + auth.token,
         },
       },
     );
@@ -56,6 +59,7 @@ const Post = (props) => {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + auth.token,
         },
       },
     );
