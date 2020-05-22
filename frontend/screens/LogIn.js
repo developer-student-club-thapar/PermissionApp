@@ -23,6 +23,8 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import { AuthContext } from '../components/context/auth-context';
 import Input from '../components/ui/Input';
 import { VALIDATOR_REQUIRE } from '../components/Validator';
+import getEnvVars from '../environment';
+const { apiUrl } = getEnvVars();
 
 const formReducer = (state, action) => {
   switch (action.type) {
@@ -143,20 +145,18 @@ const LogIn = (props) => {
         try {
           setIsLoading(true);
           setSpinner(true);
-          const response = await fetch(
-            'http://192.168.43.33:5000/api/users/login',
-            {
-              method: 'POST',
-              headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                Email_id: formState.inputs.email.value,
-                Password: formState.inputs.password.value,
-              }),
+
+          const response = await fetch(`http://${apiUrl}/api/users/login`, {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
             },
-          );
+            body: JSON.stringify({
+              Email_id: formState.inputs.email.value,
+              Password: formState.inputs.password.value,
+            }),
+          });
           const responseData = await response.json();
           //console.log(responseData);
 

@@ -25,6 +25,8 @@ import Date from '../components/ui/Date';
 import Time from '../components/ui/Time';
 import Input from '../components/ui/Input';
 import { AuthContext } from '../components/context/auth-context';
+import getEnvVars from '../environment';
+const { apiUrl } = getEnvVars();
 
 //wait function to return back a promise after refreshing the screen on pulling down
 function wait(timeout) {
@@ -101,24 +103,21 @@ const EarlyLeave = (props) => {
       if (clicked) {
         //console.log(formData);
         try {
-          const response = await fetch(
-            'http://192.168.43.33:5000/api/permi/early/',
-            {
-              method: 'POST',
-              headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + auth.token,
-              },
-              body: JSON.stringify({
-                room_num: formState.inputs.roomNumber.value,
-                destination: formState.inputs.location.value,
-                date: formState.inputs.date.value,
-                outtime: formState.inputs.time.value,
-                creator: auth.userId,
-              }),
+          const response = await fetch(`http://${apiUrl}/api/permi/early/`, {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+              Authorization: 'Bearer ' + auth.token,
             },
-          );
+            body: JSON.stringify({
+              room_num: formState.inputs.roomNumber.value,
+              destination: formState.inputs.location.value,
+              date: formState.inputs.date.value,
+              outtime: formState.inputs.time.value,
+              creator: auth.userId,
+            }),
+          });
           const responseData = await response.json();
           //console.log(responseData);
         } catch (err) {

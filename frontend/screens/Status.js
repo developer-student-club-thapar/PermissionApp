@@ -15,6 +15,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { NavigationEvents } from 'react-navigation';
 import { AuthContext } from '../components/context/auth-context';
+import getEnvVars from '../environment';
+const { apiUrl } = getEnvVars();
 
 function wait(timeout) {
   return new Promise((resolve) => {
@@ -35,7 +37,7 @@ const Status = (props) => {
       setIsLoading(true);
       setSpinner(true);
       const response = await fetch(
-        `http://192.168.43.33:5000/api/permi/user/${auth.userId}`,
+        `http://${apiUrl}/api/permi/user/${auth.userId}`,
 
         {
           headers: {
@@ -65,7 +67,7 @@ const Status = (props) => {
         setSpinner(true);
 
         const response = await fetch(
-          `http://192.168.43.33:5000/api/permi/user/${auth.userId}`,
+          `http://${apiUrl}/api/permi/user/${auth.userId}`,
           {
             headers: {
               Authorization: 'Bearer ' + auth.token,

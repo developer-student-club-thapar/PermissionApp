@@ -84,7 +84,7 @@ const signup = async (req, res, next) => {
   try {
     token = jwt.sign(
       { userId: createdUser.id, email: createdUser.Email_id },
-      'Permissionapp_private_key',
+      process.env.JWT_KEY,
       { expiresIn: '1h' },
     );
   } catch (err) {
@@ -104,7 +104,8 @@ const signup = async (req, res, next) => {
 
 const login = async (req, res, next) => {
   const { Email_id, Password } = req.body;
-  console.log(Email_id);
+
+  // console.log(Email_id);
   let existingUser;
   try {
     existingUser = await Users.findOne({ Email_id: Email_id });
@@ -144,7 +145,7 @@ const login = async (req, res, next) => {
   try {
     token = jwt.sign(
       { userId: existingUser.id, email: existingUser.Email_id },
-      'Permissionapp_private_key',
+      process.env.JWT_KEY,
       { expiresIn: '1h' },
     );
   } catch (err) {

@@ -1,0 +1,8 @@
+{
+  "env": {
+    "DB_USER": "Snigdha",
+    "DB_PASSWORD": "6S1KHLgkkanP0iv1",
+    "DB_NAME": "permi",
+    "JWT_KEY": "Permissionapp_private_key"
+  }
+}
