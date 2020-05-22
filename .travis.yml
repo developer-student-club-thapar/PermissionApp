@@ -16,4 +16,6 @@ jobs:
      script:
         - npm run lint
         - npm test
+        - npm build
+        - pre-commit run --all
         
