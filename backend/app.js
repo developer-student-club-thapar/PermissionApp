@@ -39,7 +39,7 @@ app.use((error, req, res, next) => {
 
 mongoose
   .connect(
-    'mongodb+srv://Snigdha:6S1KHLgkkanP0iv1@permissionapp-nn3fo.mongodb.net/permi?retryWrites=true&w=majority',
+    `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@permissionapp-nn3fo.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
     { useUnifiedTopology: true, useNewUrlParser: true },
   )
   .then(() => app.listen(5000))

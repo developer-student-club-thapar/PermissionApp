@@ -15,6 +15,8 @@ import { VALIDATOR_REQUIRE } from '../components/Validator';
 import Date from '../components/ui/Date';
 import Time from '../components/ui/Time';
 import { AuthContext } from '../components/context/auth-context';
+import getEnvVars from '../environment';
+const { apiUrl } = getEnvVars();
 
 //wait function to return back a promise after refreshing the screen on pulling down
 function wait(timeout) {
@@ -93,7 +95,7 @@ const LateEntry = (props) => {
         try {
           console.log(auth.userId);
           const response = await fetch(
-            'http://192.168.43.33:5000/api/permi/lateentry/',
+            `http://${apiUrl}/api/permi/lateentry/`,
             {
               method: 'POST',
               headers: {

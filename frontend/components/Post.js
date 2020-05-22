@@ -6,6 +6,8 @@ import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import EvilIconsIcon from 'react-native-vector-icons/EvilIcons';
 import ViewMoreText from 'react-native-view-more-text';
 import { AuthContext } from './context/auth-context';
+import getEnvVars from '../environment';
+const { apiUrl } = getEnvVars();
 
 const Post = (props) => {
   const auth = useContext(AuthContext);
@@ -27,10 +29,7 @@ const Post = (props) => {
   };
   const grantPermission = async () => {
     const response = await fetch(
-      'http://192.168.43.33:5000/api/permi/' +
-        props.categoryRequest +
-        '/' +
-        props.id,
+      `http://${apiUrl}/api/permi/` + props.categoryRequest + '/' + props.id,
       {
         method: 'PATCH',
         body: JSON.stringify({
@@ -47,10 +46,7 @@ const Post = (props) => {
   };
   const declinePermission = async () => {
     const response = await fetch(
-      'http://192.168.43.33:5000/api/permi/' +
-        props.categoryRequest +
-        '/' +
-        props.id,
+      `http://${apiUrl}/api/permi/` + props.categoryRequest + '/' + props.id,
       {
         method: 'PATCH',
         body: JSON.stringify({

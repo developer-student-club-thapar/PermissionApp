@@ -7,6 +7,8 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import { ScrollView } from 'react-native-gesture-handler';
 import Post from '../components/Post';
 import { AuthContext } from '../components/context/auth-context';
+import getEnvVars from '../environment';
+const { apiUrl } = getEnvVars();
 
 function wait(timeout) {
   return new Promise((resolve) => {
@@ -27,7 +29,7 @@ const Warden = (props) => {
     try {
       setIsLoading(true);
       setSpinner(true);
-      const response = await fetch('http://192.168.43.33:5000/api/permi/all');
+      const response = await fetch(`http://${apiUrl}/api/permi/all`);
       const responseData = await response.json();
       if (!response.ok) {
         throw new Error(responseData.message);
@@ -49,7 +51,7 @@ const Warden = (props) => {
       try {
         setIsLoading(true);
         setSpinner(true);
-        const response = await fetch('http://192.168.43.33:5000/api/permi/all');
+        const response = await fetch(`http://${apiUrl}/api/permi/all`);
         const responseData = await response.json();
         if (!response.ok) {
           throw new Error(responseData.message);
