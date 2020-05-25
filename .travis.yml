@@ -1,0 +1,26 @@
+dist: xenial
+# Use the latest Travis images since they are more up to date than the stable release.
+group: edge
+sudo: false
+jobs:
+    include:
+    
+    # Run JS tests
+    - language: node_js
+      # The Node version here must be kept in sync with that in `package.json`.
+      node_js:
+        - "14"
+        - "13"
+        - "12"
+     
+      script:
+        - npm run lint
+        - npm test
+        
+      - language: python
+        python: '3.7'
+        cache: pip
+        install:
+        - pip install pre-commit
+        script:
+        - pre-commit run --all-files
