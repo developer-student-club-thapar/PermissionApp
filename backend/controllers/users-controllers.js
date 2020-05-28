@@ -169,7 +169,7 @@ const changepassword = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return next(
-      new HttpError('Invalid inputs passed, please check your data.', 422),
+      new HttpError('Password should have a minimum length of 6', 422),
     );
   }
 
@@ -194,10 +194,7 @@ const changepassword = async (req, res, next) => {
   }
 
   if (!isValidPassword) {
-    const error = new HttpError(
-      'Invalid credentials, could not update status.',
-      401,
-    );
+    const error = new HttpError('Your Old Password seems to be wrong', 401);
     return next(error);
   }
 
@@ -206,7 +203,7 @@ const changepassword = async (req, res, next) => {
     newhashPassword = await bcrypt.hash(newPassword, 12);
   } catch (err) {
     const error = new HttpError(
-      'Could not create user, please try again.',
+      'Could not create new Password, please try again.',
       500,
     );
     return next(error);
@@ -221,7 +218,7 @@ const changepassword = async (req, res, next) => {
   }
 
   res.json({
-    message: 'Password updated',
+    password: 'Password updated',
   });
 };
 
