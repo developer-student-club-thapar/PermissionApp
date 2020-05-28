@@ -37,6 +37,16 @@ const DrawerContentComponent = (props) => {
             )}
           />
           <Button title="Logout" color="transparent" onPress={logout} />
+          <DrawerItems
+            {...props}
+            getLabel={(scene) => (
+              <View style={styles.button1}>
+                {props.getLabel(scene) == 'ChangePassword' && (
+                  <Text style={styles.buttonText1}>Reset Password</Text>
+                )}
+              </View>
+            )}
+          />
         </View>
       )}
       {auth.category == 'Warden' && (
@@ -45,16 +55,34 @@ const DrawerContentComponent = (props) => {
             {...props}
             getLabel={(scene) => (
               <View style={styles.button}>
-                {props.getLabel(scene) == 'PreviousWarden' && (
-                  <Text style={styles.buttonText}>Previous Requests</Text>
-                )}
                 {props.getLabel(scene) == 'Warden' && (
-                  <Text style={styles.buttonText}>Unattended Requests</Text>
+                  <Text style={styles.buttonText}>New Requests</Text>
                 )}
               </View>
             )}
           />
+          <DrawerItems
+            {...props}
+            getLabel={(scene) => (
+              <View style={styles.button}>
+                {props.getLabel(scene) == 'PreviousWarden' && (
+                  <Text style={styles.buttonText}>Previous Requests</Text>
+                )}
+              </View>
+            )}
+          />
+
           <Button title="Logout" color="transparent" onPress={logout} />
+          <DrawerItems
+            {...props}
+            getLabel={(scene) => (
+              <View style={styles.button1}>
+                {props.getLabel(scene) == 'ChangePassword' && (
+                  <Text style={styles.buttonText1}>Reset Password</Text>
+                )}
+              </View>
+            )}
+          />
         </View>
       )}
       {auth.category == 'Caretaker' && (
@@ -65,6 +93,9 @@ const DrawerContentComponent = (props) => {
               <View style={styles.button}>
                 {props.getLabel(scene) == 'PreviousWarden' && (
                   <Text style={styles.buttonText}>Previous Requests</Text>
+                )}
+                {props.getLabel(scene) == 'ChangePassword' && (
+                  <Text style={styles.buttonText}>Reset Password</Text>
                 )}
               </View>
             )}
@@ -94,10 +125,24 @@ const styles = StyleSheet.create({
     color: 'white',
     padding: 10,
   },
+  button1: {
+    marginBottom: 2,
+  },
   headerContainer: {
     height: 150,
   },
+  drawerText: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+  },
   button: {},
+  buttonText1: {
+    fontSize: 18,
+
+    padding: 10,
+    color: 'grey',
+  },
   screenContainer: {
     paddingTop: 20,
     width: '100%',

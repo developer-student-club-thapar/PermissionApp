@@ -22,7 +22,11 @@ router.post('/login', usersController.login);
 // route to change Password
 router.patch(
   '/changepassword/:uid',
-  [check('prevPassword').not().isEmpty(), check('newPassword').not().isEmpty()],
+  [
+    check('prevPassword').not().isEmpty(),
+    check('newPassword').not().isEmpty(),
+    check('newPassword').isLength({ min: 6 }),
+  ],
   usersController.changepassword,
 );
 

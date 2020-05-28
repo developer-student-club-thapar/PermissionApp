@@ -14,6 +14,7 @@ import LateEntry from '../../screens/LateEntry';
 import Caretaker from '../../screens/Caretaker';
 import Warden from '../../screens/Warden';
 import PreviousWarden from '../../screens/PreviousWarden';
+import ChangePassword from '../../screens/ChangePassword';
 
 //main function to create a navigation drawer
 const Navigation = createDrawerNavigator(
@@ -67,6 +68,9 @@ const Navigation = createDrawerNavigator(
     },
     PreviousWarden: {
       screen: PreviousWarden,
+    },
+    ChangePassword: {
+      screen: ChangePassword,
     },
   },
   {
