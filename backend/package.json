@@ -17,6 +17,7 @@
     "mongodb": "^3.5.5",
     "mongoose": "^5.9.7",
     "mongoose-unique-validator": "^2.0.3",
+    "nodemailer": "^6.4.11",
     "uuid": "^3.4.0"
   },
   "devDependencies": {

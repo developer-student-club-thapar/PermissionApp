@@ -1,7 +1,13 @@
 //Component has been used in Caretaker and warden screen to show the permission requests. This is the layout of each request.
 
-import React, { Component, useContext } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import React, { Component, useContext, useState } from 'react';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  RefreshControlComponent,
+} from 'react-native';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import EvilIconsIcon from 'react-native-vector-icons/EvilIcons';
 import ViewMoreText from 'react-native-view-more-text';
@@ -59,6 +65,44 @@ const Post = (props) => {
         },
       },
     );
+    props.isCalled();
+  };
+
+  const askPermission = async () => {
+    console.log('enterr');
+    const response = await fetch(
+      `http://${apiUrl}/api/permi/sendMail/` + props.id,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          parentMail: 'sbhatnagar_be17@thapar.edu',
+          destination: props.destination,
+          starttime: props.intime,
+          endtime: props.outtime,
+          date: props.date,
+        }),
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + auth.token,
+        },
+      },
+    );
+    const response1 = await fetch(
+      `http://${apiUrl}/api/permi/` + props.categoryRequest + '/' + props.id,
+      {
+        method: 'PATCH',
+        body: JSON.stringify({
+          status: 'askedParent',
+        }),
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + auth.token,
+        },
+      },
+    );
+
     props.isCalled();
   };
   return (
@@ -169,6 +213,33 @@ const Post = (props) => {
           <Text style={styles.caption}>Grant</Text>
         </TouchableOpacity>
 
+        {props.status == 'askedParent' && (
+          <TouchableOpacity
+            disabled={true}
+            style={styles.containerButtonAsk}
+            onPress={askPermission}
+          >
+            <Text style={styles.caption}>Requested</Text>
+          </TouchableOpacity>
+        )}
+        {props.status != 'askedParent' && props.status == 'approvedParent' && (
+          <TouchableOpacity
+            disabled={true}
+            style={styles.containerButtonApprove}
+            onPress={askPermission}
+          >
+            <Text style={styles.caption}>Approved</Text>
+          </TouchableOpacity>
+        )}
+        {props.status != 'askedParent' && props.status != 'approvedParent' && (
+          <TouchableOpacity
+            style={styles.containerButton2}
+            onPress={askPermission}
+          >
+            <Text style={styles.caption}>Ask Parents</Text>
+          </TouchableOpacity>
+        )}
+
         <TouchableOpacity
           style={styles.containerButton2}
           onPress={declinePermission}
@@ -212,7 +283,7 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOpacity: 0.35,
     shadowRadius: 5,
-    width: '40%',
+    width: '30%',
   },
   containerButton2: {
     backgroundColor: '#212121',
@@ -227,7 +298,39 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOpacity: 0.35,
     shadowRadius: 5,
-    width: '40%',
+    width: '30%',
+    textAlign: 'center',
+  },
+  containerButtonAsk: {
+    backgroundColor: '#666666',
+    elevation: 3,
+    marginTop: 10,
+    marginBottom: 10,
+    borderRadius: 2,
+    shadowOffset: {
+      height: 4,
+      width: -2,
+    },
+    shadowColor: '#000',
+    shadowOpacity: 0.35,
+    shadowRadius: 5,
+    width: '30%',
+    textAlign: 'center',
+  },
+  containerButtonApprove: {
+    backgroundColor: 'green',
+    elevation: 3,
+    marginTop: 10,
+    marginBottom: 10,
+    borderRadius: 2,
+    shadowOffset: {
+      height: 4,
+      width: -2,
+    },
+    shadowColor: '#000',
+    shadowOpacity: 0.35,
+    shadowRadius: 5,
+    width: '30%',
     textAlign: 'center',
   },
   caption: {

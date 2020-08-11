@@ -40,7 +40,9 @@ const ScrollViewEntry = (props) => {
           {props.status == 'accepted' && (
             <EntypoIcon name="check" style={styles.icon3}></EntypoIcon>
           )}
-          {props.status == 'pending' && (
+          {(props.status == 'pending' ||
+            props.status == 'askedParent' ||
+            props.status == 'approvedParent') && (
             <EntypoIcon
               name="paper-plane"
               style={styles.iconpending}
