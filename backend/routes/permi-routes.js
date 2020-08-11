@@ -15,6 +15,8 @@ router.get('/all', permiControllers.getAllPermiForCaretaker);
 
 //different requests of a particular creator id
 //router.get('/:creatorid', permiControllers.getsocietypermisById);
+router.get('/verify', permiControllers.verifyEmail);
+
 router.use(checkAuth);
 //to get all permi requests made by a particlar user
 router.get('/user/:uid', permiControllers.getPermisByUserId);
@@ -86,6 +88,8 @@ router.patch(
   [check('status').not().isEmpty()],
   permiControllers.updatePermiLate,
 );
+
+router.post('/sendMail/:uid', permiControllers.sendMail);
 
 //to delete any permi if required (by caretaker)
 router.delete('/society/:uid', permiControllers.deleteUserSociety);

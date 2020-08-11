@@ -3,8 +3,7 @@ import { Platform } from 'react-native';
 
 // sets the environment variables for urls used in frontend to be able to configure easily when run in development or in production
 // Replace localhost conditional url for non ios platform with your ip address to run it locally!
-const localhost =
-  Platform.OS === 'ios' ? 'localhost:5000' : '192.168.43.33:5000';
+const localhost = Platform.OS === 'ios' ? 'localhost:5000' : '192.168.1.8:5000';
 
 const ENV = {
   dev: {

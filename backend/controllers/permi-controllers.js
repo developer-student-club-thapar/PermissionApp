@@ -7,6 +7,7 @@ const Societypermi = require('../models/Societypermi-model');
 const EarlyLeavepermi = require('../models/EarlyLeavepermi-model');
 const Librarypermi = require('../models/Librarypermi-model');
 const LateEntrypermi = require('../models/LateEntrypermi-model');
+var nodemailer = require('nodemailer');
 
 //display all society requests
 const getAllSocietyPermi = async (req, res, next) => {
@@ -197,7 +198,9 @@ const getAllPermi = async (req, res, next) => {
 const getAllPermiForCaretaker = async (req, res, next) => {
   let permis;
   try {
-    permis = await Librarypermi.find({ status: 'pending' });
+    permis = await Librarypermi.find({
+      status: ['pending', 'askedParent', 'approvedParent'],
+    });
   } catch (err) {
     const error = new HttpError(
       'Fetching all library permis failed, please try again later.',
@@ -207,7 +210,9 @@ const getAllPermiForCaretaker = async (req, res, next) => {
   }
   let permissoc;
   try {
-    permissoc = await Societypermi.find({ status: 'pending' });
+    permissoc = await Societypermi.find({
+      status: ['pending', 'askedParent', 'approvedParent'],
+    });
   } catch (err) {
     const error = new HttpError(
       'Fetching all society permis failed, please try again later.',
@@ -217,7 +222,9 @@ const getAllPermiForCaretaker = async (req, res, next) => {
   }
   let permisear;
   try {
-    permisear = await EarlyLeavepermi.find({ status: 'pending' });
+    permisear = await EarlyLeavepermi.find({
+      status: ['pending', 'askedParent', 'approvedParent'],
+    });
   } catch (err) {
     const error = new HttpError(
       'Fetching all library permis failed, please try again later.',
@@ -227,7 +234,9 @@ const getAllPermiForCaretaker = async (req, res, next) => {
   }
   let permislate;
   try {
-    permislate = await LateEntrypermi.find({ status: 'pending' });
+    permislate = await LateEntrypermi.find({
+      status: ['pending', 'askedParent', 'approvedParent'],
+    });
   } catch (err) {
     const error = new HttpError(
       'Fetching all library permis failed, please try again later.',
@@ -574,6 +583,7 @@ const updatePermiLate = async (req, res, next) => {
   }
 
   const { status } = req.body;
+  console.log(status);
   const userid = req.params.uid;
   let id;
   try {
@@ -743,6 +753,89 @@ const deleteUserEarly = async (req, res, next) => {
   res.status(200).json({ message: 'Deleted Data' });
 };
 
+//email credentials sending to parents.
+var smtpTransport = nodemailer.createTransport({
+  service: 'Gmail',
+  auth: {
+    user: 'hostel.permission.ask@gmail.com',
+    pass: 'hostelpermission1',
+  },
+});
+var rand, mailOptions, host, link;
+
+const sendMail = async (req, res, next) => {
+  console.log('request reched');
+  let userId = req.params.uid;
+  console.log(userId);
+  rand = userId;
+  host = req.get('host');
+  link = 'http://' + req.get('host') + '/api/permi/verify?id=' + rand;
+  const { parentMail, destination, starttime, endtime, date } = req.body;
+  mailOptions = {
+    to: parentMail,
+    subject: 'Permission for leaving hostel',
+    html:
+      'Hello,<br> Your ward is seeking permission for visiting ' +
+      destination +
+      ' from the hostel from ' +
+      starttime +
+      ' to ' +
+      endtime +
+      ' on ' +
+      date +
+      ' Please Click on the link to give your consent to send your child out.<br><a href=' +
+      link +
+      '>Click here to approve</a>',
+  };
+  console.log(mailOptions);
+  smtpTransport.sendMail(mailOptions, function (error, response) {
+    if (error) {
+      console.log(error);
+      res.end('error');
+    } else {
+      console.log('Message sent: ' + response.message);
+      res.end('sent');
+    }
+  });
+  res.status(200).json({ message: 'Mail sent!' });
+};
+
+const verifyEmail = async (req, res, next) => {
+  console.log('verified!');
+  console.log(req.protocol + ':/' + req.get('host'));
+  if (req.protocol + '://' + req.get('host') == 'http://' + host) {
+    console.log('Domain is matched. Information is from Authentic email');
+    if (req.query.id == rand) {
+      const userid = rand;
+      let id;
+      try {
+        id = await LateEntrypermi.findById(userid);
+      } catch (err) {
+        return next(new HttpError('Could not update. Please try Again', 500));
+      }
+      //console.log(id);
+      id.status = 'approvedParent';
+      //console.log(id);
+      try {
+        await id.save();
+      } catch (err) {
+        const error = new HttpError('Could Not Update.Please Try Againu.', 500);
+        return next(error);
+      }
+      console.log('email is verified');
+      res.end(
+        '<h1> ' +
+          mailOptions.to +
+          ', Your consent has been recorded. Thank you!',
+      );
+    } else {
+      console.log('email is not verified');
+      res.end('<h1>Bad Request</h1>');
+    }
+  } else {
+    res.end('<h1>Request is from unknown source');
+  }
+};
 //exports.getPlaceById = getSocietyPermiById;
 
 exports.getAllSocietyPermi = getAllSocietyPermi;
@@ -768,3 +861,6 @@ exports.deleteUserSociety = deleteUserSociety;
 exports.deleteUserLibrary = deleteUserLibrary;
 exports.deleteUserLate = deleteUserLate;
 exports.deleteUserEarly = deleteUserEarly;
+
+exports.sendMail = sendMail;
+exports.verifyEmail = verifyEmail;
